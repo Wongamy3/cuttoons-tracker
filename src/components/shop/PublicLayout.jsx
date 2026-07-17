@@ -55,8 +55,8 @@ export default function PublicLayout() {
                   end={l.end}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    'block px-4 py-3 text-sm font-semibold uppercase tracking-wide ' +
-                    (isActive ? 'text-black' : 'text-slate-500')
+                    'font-comic block px-4 py-3 text-xl tracking-wide ' +
+                    (isActive ? 'text-black' : 'text-slate-400')
                   }
                 >
                   {l.label}

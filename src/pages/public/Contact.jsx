@@ -22,7 +22,7 @@ function FacebookIcon(props) {
 export default function Contact() {
   return (
     <main className="mx-auto max-w-2xl px-4 pb-16 pt-8">
-      <h1 className="text-2xl font-bold text-black">Contact Us</h1>
+      <h1 className="font-comic text-4xl text-black">Contact Us</h1>
       <p className="mt-2 text-sm text-slate-600">
         Interested in a custom commission, or have a question about a piece? Reach out any time.
       </p>

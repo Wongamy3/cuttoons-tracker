@@ -1,7 +1,7 @@
 export default function About() {
   return (
     <main className="mx-auto max-w-2xl px-4 pb-16 pt-8">
-      <h1 className="text-2xl font-bold text-black">About CutToons</h1>
+      <h1 className="font-comic text-4xl text-black">About CutToons</h1>
       <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-600">
         <p>
           CutToons is a small handmade business creating custom paintings on MDF wood panels. Every piece
