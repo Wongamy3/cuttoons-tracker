@@ -123,6 +123,15 @@ export default function OrderForm() {
         />
       </Field>
 
+      <Field label="Date Order Placed">
+        <input
+          type="date"
+          className={inputCls}
+          value={form.orderPlacedDate}
+          onChange={(e) => set('orderPlacedDate', e.target.value)}
+        />
+      </Field>
+
       <Field label="Painting idea / description">
         <textarea
           rows={3}

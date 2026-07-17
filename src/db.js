@@ -106,6 +106,7 @@ export function blankOrder() {
     customerName: '',
     contactMethod: CONTACT_METHODS[0],
     contactInfo: '',
+    orderPlacedDate: new Date().toISOString().slice(0, 10),
     ideaDescription: '',
     referencePhotos: [],
     size: SIZE_OPTIONS[0],

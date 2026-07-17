@@ -107,6 +107,9 @@ export default function Dashboard() {
           const dueDateLabel = order.dueDate
             ? new Date(order.dueDate + 'T00:00:00').toLocaleDateString()
             : null
+          const orderPlacedLabel = order.orderPlacedDate
+            ? new Date(order.orderPlacedDate + 'T00:00:00').toLocaleDateString()
+            : null
 
           return (
             <li key={order.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -121,7 +124,15 @@ export default function Dashboard() {
                 <div className="mt-2">
                   <StatusBadge status={order.status} />
                 </div>
-                <div className="mt-2 grid grid-cols-3 gap-1 rounded-lg bg-slate-50 px-2 py-1.5 text-center text-[11px]">
+                <div className="mt-2 grid grid-cols-2 gap-1.5 rounded-lg bg-slate-50 px-2 py-1.5 text-center text-[11px]">
+                  <div>
+                    <p className="text-slate-400">Order Placed</p>
+                    <p className="font-semibold text-black">{orderPlacedLabel || '—'}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400">Target Due</p>
+                    <p className="font-semibold text-black">{dueDateLabel || '—'}</p>
+                  </div>
                   <div>
                     <p className="text-slate-400">Payments Made</p>
                     <p className="font-semibold text-black">${paid.toFixed(2)}</p>
@@ -129,10 +140,6 @@ export default function Dashboard() {
                   <div>
                     <p className="text-slate-400">Balance Due</p>
                     <p className="font-semibold text-black">{balance !== null ? `$${balance.toFixed(2)}` : '—'}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-400">Target Due</p>
-                    <p className="font-semibold text-black">{dueDateLabel || '—'}</p>
                   </div>
                 </div>
               </Link>
