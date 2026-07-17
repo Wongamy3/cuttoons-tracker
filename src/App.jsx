@@ -2,7 +2,11 @@ import { Routes, Route } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import Layout from './components/Layout'
 import Login from './components/Login'
-import Shop from './pages/Shop'
+import PublicLayout from './components/shop/PublicLayout'
+import PublicHome from './pages/public/Home'
+import PublicShop from './pages/public/Shop'
+import PublicAbout from './pages/public/About'
+import PublicContact from './pages/public/Contact'
 import Dashboard from './pages/Dashboard'
 import OrderForm from './pages/OrderForm'
 import Portfolio from './pages/Portfolio'
@@ -42,7 +46,12 @@ function RequireAuth({ children }) {
 function App() {
   return (
     <Routes>
-      <Route path="shop" element={<Shop />} />
+      <Route path="shop" element={<PublicLayout />}>
+        <Route index element={<PublicHome />} />
+        <Route path="browse" element={<PublicShop />} />
+        <Route path="about" element={<PublicAbout />} />
+        <Route path="contact" element={<PublicContact />} />
+      </Route>
       <Route
         element={
           <RequireAuth>
