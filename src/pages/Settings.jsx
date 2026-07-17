@@ -5,6 +5,16 @@ import { auth } from '../firebase'
 import { useAuth } from '../hooks/useAuth'
 import { btnPrimary, btnSecondary } from '../components/buttonStyles'
 
+function ExternalLinkIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+}
+
 export default function Settings() {
   const { user } = useAuth()
   const [status, setStatus] = useState('')
@@ -31,6 +41,23 @@ export default function Settings() {
         <button onClick={handleExport} className={'w-full ' + btnPrimary}>
           Download a copy
         </button>
+      </section>
+
+      <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-2">
+        <h2 className="font-medium text-black">Customer Shop Page</h2>
+        <p className="text-sm text-slate-500">
+          A public page anyone can view without signing in — shows only what's currently for sale and
+          your previously sold work. Good for sharing on Instagram or sending to a customer.
+        </p>
+        <a
+          href="#/shop"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={'flex w-full items-center justify-center gap-1.5 ' + btnSecondary}
+        >
+          <ExternalLinkIcon className="h-4 w-4" />
+          Open Customer View
+        </a>
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-2">
