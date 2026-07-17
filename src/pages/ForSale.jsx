@@ -45,12 +45,14 @@ export default function ForSale() {
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')
   const [price, setPrice] = useState('')
+  const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
 
   const [previewItem, setPreviewItem] = useState(null)
   const [editCaption, setEditCaption] = useState('')
   const [editSizeTag, setEditSizeTag] = useState('')
   const [editPrice, setEditPrice] = useState('')
+  const [editDescription, setEditDescription] = useState('')
   const [saving, setSaving] = useState(false)
 
   async function handleFiles(e) {
@@ -66,12 +68,14 @@ export default function ForSale() {
           caption: caption.trim(),
           sizeTag: sizeTag.trim(),
           price: price.trim(),
+          description: description.trim(),
           createdAt: Date.now(),
         })
       }
       setCaption('')
       setSizeTag('')
       setPrice('')
+      setDescription('')
     } finally {
       setUploading(false)
     }
@@ -82,13 +86,19 @@ export default function ForSale() {
     setEditCaption(item.caption || '')
     setEditSizeTag(item.sizeTag || '')
     setEditPrice(item.price || '')
+    setEditDescription(item.description || '')
   }
 
   async function handleSaveEdit() {
     if (!previewItem) return
     setSaving(true)
     try {
-      const data = { caption: editCaption.trim(), sizeTag: editSizeTag.trim(), price: editPrice.trim() }
+      const data = {
+        caption: editCaption.trim(),
+        sizeTag: editSizeTag.trim(),
+        price: editPrice.trim(),
+        description: editDescription.trim(),
+      }
       await updateForSaleItem(previewItem.id, data)
       setPreviewItem((p) => (p ? { ...p, ...data } : p))
     } finally {
@@ -129,6 +139,13 @@ export default function ForSale() {
             className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
         </div>
+        <textarea
+          placeholder="Description (optional)"
+          rows={3}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+        />
         <button
           type="button"
           disabled={uploading}
@@ -198,6 +215,13 @@ export default function ForSale() {
                   className={editInputCls}
                 />
               </div>
+              <textarea
+                placeholder="Description (optional)"
+                rows={3}
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                className={editInputCls}
+              />
               <button
                 type="button"
                 onClick={handleSaveEdit}
