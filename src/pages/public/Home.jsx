@@ -3,6 +3,7 @@ import { useCollection } from '../../lib/useCollection'
 import { sortedByNewest } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
+import teamPhoto from '../../assets/team-photo.jpg'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
@@ -12,7 +13,12 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
       <section className="text-center">
-        <h1 className="text-2xl font-bold text-black">Handmade Custom Paintings</h1>
+        <img
+          src={teamPhoto}
+          alt="The CutToons team"
+          className="mx-auto h-48 w-48 rounded-xl border-4 border-black object-cover shadow-md sm:h-64 sm:w-64"
+        />
+        <h1 className="mt-6 text-2xl font-bold text-black">Welcome to CutToons Shop</h1>
         <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
           CutToons creates one-of-a-kind paintings on custom-cut MDF panels — hand-painted in acrylic and
           finished with a glossy epoxy coat. Every piece starts with your idea: a photo, a character, a
