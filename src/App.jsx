@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import Layout from './components/Layout'
 import Login from './components/Login'
+import Shop from './pages/Shop'
 import Dashboard from './pages/Dashboard'
 import OrderForm from './pages/OrderForm'
 import Portfolio from './pages/Portfolio'
@@ -13,7 +14,7 @@ import { useAuth } from './hooks/useAuth'
 import { auth, ALLOWED_EMAILS } from './firebase'
 import { btnSecondary } from './components/buttonStyles'
 
-function App() {
+function RequireAuth({ children }) {
   const { user, loading } = useAuth()
 
   if (loading) {
@@ -35,9 +36,20 @@ function App() {
     )
   }
 
+  return children
+}
+
+function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path="shop" element={<Shop />} />
+      <Route
+        element={
+          <RequireAuth>
+            <Layout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<Dashboard />} />
         <Route path="orders/:id" element={<OrderForm />} />
         <Route path="portfolio" element={<Portfolio />} />
