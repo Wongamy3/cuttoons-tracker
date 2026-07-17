@@ -9,7 +9,7 @@ import Taxes from './pages/Taxes'
 import ExpenseForm from './pages/ExpenseForm'
 import Settings from './pages/Settings'
 import { useAuth } from './hooks/useAuth'
-import { auth, ALLOWED_EMAIL } from './firebase'
+import { auth, ALLOWED_EMAILS } from './firebase'
 import { btnSecondary } from './components/buttonStyles'
 
 function App() {
@@ -21,11 +21,11 @@ function App() {
 
   if (!user) return <Login />
 
-  if (user.email !== ALLOWED_EMAIL) {
+  if (!ALLOWED_EMAILS.includes(user.email)) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-brand-50 px-8 text-center">
         <p className="text-sm text-slate-600">
-          This app is private to {ALLOWED_EMAIL}. You're signed in as {user.email}.
+          This app is private. You're signed in as {user.email}, which isn't on the allowed list.
         </p>
         <button type="button" onClick={() => signOut(auth)} className={btnSecondary}>
           Sign out

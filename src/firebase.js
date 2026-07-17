@@ -17,4 +17,4 @@ export const auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 export const db = getFirestore(app)
 
-export const ALLOWED_EMAIL = 'wong.amaymay@gmail.com'
+export const ALLOWED_EMAILS = ['wong.amaymay@gmail.com', 'floressart92@gmail.com']
