@@ -71,6 +71,18 @@ export async function deletePortfolioItem(id) {
   await deleteDoc(doc(firestore, 'portfolio', id))
 }
 
+// --- For Sale (current inventory) ---
+export async function addForSaleItem(data) {
+  const ref = await addDoc(collection(firestore, 'forSale'), data)
+  return ref.id
+}
+export async function updateForSaleItem(id, data) {
+  await updateDoc(doc(firestore, 'forSale', id), data)
+}
+export async function deleteForSaleItem(id) {
+  await deleteDoc(doc(firestore, 'forSale', id))
+}
+
 export const CONTACT_METHODS = [
   'Instagram DM',
   'Facebook Message',

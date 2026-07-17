@@ -30,6 +30,15 @@ function SettingsIcon(props) {
   )
 }
 
+function TagIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  )
+}
+
 function TaxesIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -42,6 +51,7 @@ function TaxesIcon(props) {
 const tabs = [
   { to: '/', label: 'Home', end: true, Icon: HomeIcon },
   { to: '/portfolio', label: 'Portfolio', Icon: PortfolioIcon },
+  { to: '/for-sale', label: 'For Sale', Icon: TagIcon },
   { to: '/taxes', label: 'Taxes', Icon: TaxesIcon },
   { to: '/settings', label: 'Settings', Icon: SettingsIcon },
 ]
