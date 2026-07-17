@@ -34,39 +34,41 @@ export default function PublicLayout() {
 
   return (
     <div className="font-shop-body flex min-h-screen flex-col bg-white">
-      <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          className="flex h-9 w-9 items-center justify-center text-black"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-        >
-          {open ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-        </button>
-        <img src={logo} alt="CutToons" className="h-10 w-auto" />
-      </header>
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur">
+        <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="flex h-9 w-9 items-center justify-center text-black"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+          >
+            {open ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+          </button>
+          <img src={logo} alt="CutToons" className="h-10 w-auto" />
+        </header>
 
-      {open && (
-        <nav className="border-b border-slate-200 bg-white">
-          <ul className="divide-y divide-slate-100">
-            {links.map((l) => (
-              <li key={l.to}>
-                <NavLink
-                  to={l.to}
-                  end={l.end}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    'font-comic block px-4 py-3 text-xl tracking-wide ' +
-                    (isActive ? 'text-black' : 'text-slate-400')
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+        {open && (
+          <nav className="border-b border-slate-200 bg-white">
+            <ul className="divide-y divide-slate-100">
+              {links.map((l) => (
+                <li key={l.to}>
+                  <NavLink
+                    to={l.to}
+                    end={l.end}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      'font-comic block px-4 py-3 text-xl tracking-wide ' +
+                      (isActive ? 'text-black' : 'text-slate-400')
+                    }
+                  >
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
 
       <div className="flex-1">
         <Outlet />
