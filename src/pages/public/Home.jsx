@@ -4,6 +4,7 @@ import { sortedByNewest } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
 import teamPhoto from '../../assets/team-photo.jpg'
+import signature from '../../assets/signature.png'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
@@ -25,6 +26,7 @@ export default function Home() {
           memory. Panels are cut to shape with a jigsaw and finished with routed edge detailing, so no two
           pieces are ever quite the same.
         </p>
+        <img src={signature} alt="CutToons signature" className="mx-auto mt-4 h-16 w-auto" />
       </section>
 
       <section className="mt-10">
