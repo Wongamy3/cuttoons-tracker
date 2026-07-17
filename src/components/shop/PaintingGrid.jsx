@@ -23,15 +23,15 @@ export default function PaintingGrid({ items, sold, onSelect, emptyText }) {
           <div className="relative aspect-square overflow-hidden bg-slate-100">
             <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
             {sold && (
-              <span className="absolute left-1 top-1 rounded-full bg-black/70 px-2 py-0.5 text-[10px] font-bold text-white">
-                SOLD
+              <span className="font-comic absolute left-2 top-2 -rotate-[14deg] rounded-full border-2 border-white bg-comic-500 px-3 py-1 text-sm text-white shadow-md">
+                Sold
               </span>
             )}
           </div>
           <div className="p-2">
             {itemSubtitle(item) && <p className="text-xs text-slate-500">{itemSubtitle(item)}</p>}
             {item.price && (
-              <p className="font-semibold text-black">
+              <p className="font-semibold text-comic-600">
                 {sold ? 'Sold for ' : ''}${Number(item.price).toFixed(2)}
               </p>
             )}

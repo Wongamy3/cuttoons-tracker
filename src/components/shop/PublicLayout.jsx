@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../../assets/cuttoons-logo.png'
+import Footer from './Footer'
 
 function MenuIcon(props) {
   return (
@@ -32,7 +33,7 @@ export default function PublicLayout() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col bg-white">
       <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <button
           type="button"
@@ -67,7 +68,10 @@ export default function PublicLayout() {
         </nav>
       )}
 
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   )
 }

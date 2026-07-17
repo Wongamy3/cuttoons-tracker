@@ -23,6 +23,12 @@
   --color-brand-500: #2563eb;
   --color-brand-600: #1d4ed8;
   --color-brand-700: #1e3a8a;
+
+  /* Comic-book spot color for the customer-facing shop site (prices, SOLD
+     stamp, footer accents) — kept off the internal admin app. */
+  --color-comic-100: #ffd9d6;
+  --color-comic-500: #ed1c24;
+  --color-comic-600: #c8151c;
 }
 
 html, body, #root {

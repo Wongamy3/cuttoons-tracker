@@ -16,7 +16,7 @@ export default function PaintingPreview({ item, onClose }) {
         />
         <div className="mt-3 text-center">
           {itemSubtitle(item) && <p className="text-sm text-slate-500">{itemSubtitle(item)}</p>}
-          {item.price && <p className="text-xl font-bold text-black">${Number(item.price).toFixed(2)}</p>}
+          {item.price && <p className="text-xl font-bold text-comic-600">${Number(item.price).toFixed(2)}</p>}
         </div>
         <div className="mt-3 flex justify-center">
           <button type="button" onClick={onClose} className={btnSecondary}>
