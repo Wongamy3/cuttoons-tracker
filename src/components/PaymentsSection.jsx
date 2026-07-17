@@ -81,7 +81,7 @@ export default function PaymentsSection({ payments, onChange }) {
           onClick={addPayment}
           className="col-span-2 rounded-full border-2 border-dashed border-slate-300 py-2 text-sm font-bold text-slate-500 transition duration-150 active:scale-95 hover:border-brand-400 hover:text-brand-600"
         >
-          + Add payment
+          Save Payment
         </button>
       </div>
     </div>
