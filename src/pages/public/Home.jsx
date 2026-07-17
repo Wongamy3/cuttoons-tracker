@@ -16,7 +16,7 @@ export default function Home() {
         <img
           src={teamPhoto}
           alt="The CutToons team"
-          className="mx-auto h-48 w-48 rounded-xl border-4 border-black object-cover shadow-md sm:h-64 sm:w-64"
+          className="h-64 w-full rounded-xl border-4 border-black object-cover shadow-md sm:h-80"
         />
         <h1 className="font-comic mt-6 text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
         <p className="font-comic mx-auto mt-3 max-w-xl text-lg leading-relaxed tracking-wide text-slate-600">
