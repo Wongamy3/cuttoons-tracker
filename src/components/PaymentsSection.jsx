@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { totalPaid } from '../db'
+import { btnPrimary } from './buttonStyles'
 
 const inputCls =
   'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none'
@@ -76,11 +77,7 @@ export default function PaymentsSection({ payments, onChange }) {
           value={method}
           onChange={(e) => setMethod(e.target.value)}
         />
-        <button
-          type="button"
-          onClick={addPayment}
-          className="col-span-2 rounded-full border-2 border-dashed border-slate-300 py-2 text-sm font-bold text-slate-500 transition duration-150 active:scale-95 hover:border-brand-400 hover:text-brand-600"
-        >
+        <button type="button" onClick={addPayment} className={'col-span-2 ' + btnPrimary}>
           Save Payment
         </button>
       </div>

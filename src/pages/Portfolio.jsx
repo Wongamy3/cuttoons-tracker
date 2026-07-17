@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState } from 'react'
-import { addPortfolioItem, deletePortfolioItem, uploadPhoto } from '../db'
+import { addPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadPhoto } from '../db'
 import { useCollection } from '../lib/useCollection'
 import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
+
+const editInputCls = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm'
 
 function itemSubtitle(item) {
   return [item.caption, item.sizeTag, item.price ? `$${Number(item.price).toFixed(2)}` : null]
@@ -44,7 +46,12 @@ export default function Portfolio() {
   const [sizeTag, setSizeTag] = useState('')
   const [price, setPrice] = useState('')
   const [uploading, setUploading] = useState(false)
+
   const [previewItem, setPreviewItem] = useState(null)
+  const [editCaption, setEditCaption] = useState('')
+  const [editSizeTag, setEditSizeTag] = useState('')
+  const [editPrice, setEditPrice] = useState('')
+  const [saving, setSaving] = useState(false)
 
   async function handleFiles(e) {
     const files = Array.from(e.target.files || [])
@@ -70,6 +77,25 @@ export default function Portfolio() {
     }
   }
 
+  function openPreview(item) {
+    setPreviewItem(item)
+    setEditCaption(item.caption || '')
+    setEditSizeTag(item.sizeTag || '')
+    setEditPrice(item.price || '')
+  }
+
+  async function handleSaveEdit() {
+    if (!previewItem) return
+    setSaving(true)
+    try {
+      const data = { caption: editCaption.trim(), sizeTag: editSizeTag.trim(), price: editPrice.trim() }
+      await updatePortfolioItem(previewItem.id, data)
+      setPreviewItem((p) => (p ? { ...p, ...data } : p))
+    } finally {
+      setSaving(false)
+    }
+  }
+
   async function handleDelete(id) {
     if (!confirm('Delete this photo from your portfolio?')) return
     if (previewItem?.id === id) setPreviewItem(null)
@@ -79,28 +105,28 @@ export default function Portfolio() {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-slate-200 bg-white p-3 space-y-2">
-        <p className="text-sm font-medium text-slate-700">Add a past painting</p>
-        <div className="flex gap-2">
-          <input
-            placeholder="Caption (optional)"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            className="flex-1 rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
-          />
+        <p className="text-sm font-medium text-slate-700">Add Painting to Portfolio</p>
+        <input
+          placeholder="Caption (optional)"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+        />
+        <div className="grid grid-cols-2 gap-2">
           <input
             placeholder="Size (optional)"
             value={sizeTag}
             onChange={(e) => setSizeTag(e.target.value)}
-            className="w-24 rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
           <input
             type="number"
             min="0"
             step="0.01"
-            placeholder="Price"
+            placeholder="Price (optional)"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            className="w-20 rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
         </div>
         <button
@@ -129,12 +155,7 @@ export default function Portfolio() {
 
       <div className="grid grid-cols-3 gap-2">
         {items?.map((item) => (
-          <PortfolioThumb
-            key={item.id}
-            item={item}
-            onPreview={() => setPreviewItem(item)}
-            onDelete={handleDelete}
-          />
+          <PortfolioThumb key={item.id} item={item} onPreview={() => openPreview(item)} onDelete={handleDelete} />
         ))}
       </div>
 
@@ -143,16 +164,51 @@ export default function Portfolio() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setPreviewItem(null)}
         >
-          <div className="relative max-h-full max-w-full" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="max-h-full w-full max-w-sm overflow-y-auto rounded-lg bg-white p-3"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
               src={previewItem.photo?.url}
               alt={previewItem.caption || ''}
-              className="max-h-[70vh] max-w-full rounded-lg object-contain"
+              className="max-h-[45vh] w-full rounded-lg object-contain"
             />
-            {itemSubtitle(previewItem) && (
-              <p className="mt-2 text-center text-sm text-white">{itemSubtitle(previewItem)}</p>
-            )}
-            <div className="mt-3 flex justify-center gap-3">
+
+            <div className="mt-3 space-y-2">
+              <input
+                placeholder="Caption (optional)"
+                value={editCaption}
+                onChange={(e) => setEditCaption(e.target.value)}
+                className={editInputCls}
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  placeholder="Size (optional)"
+                  value={editSizeTag}
+                  onChange={(e) => setEditSizeTag(e.target.value)}
+                  className={editInputCls}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="Price (optional)"
+                  value={editPrice}
+                  onChange={(e) => setEditPrice(e.target.value)}
+                  className={editInputCls}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleSaveEdit}
+                disabled={saving}
+                className={'w-full disabled:opacity-60 ' + btnPrimary}
+              >
+                {saving ? 'Saving...' : 'Save changes'}
+              </button>
+            </div>
+
+            <div className="mt-3 flex justify-center gap-2">
               <a
                 href={previewItem.photo?.url}
                 download

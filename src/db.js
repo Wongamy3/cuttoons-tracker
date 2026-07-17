@@ -64,6 +64,9 @@ export async function addPortfolioItem(data) {
   const ref = await addDoc(collection(firestore, 'portfolio'), data)
   return ref.id
 }
+export async function updatePortfolioItem(id, data) {
+  await updateDoc(doc(firestore, 'portfolio', id), data)
+}
 export async function deletePortfolioItem(id) {
   await deleteDoc(doc(firestore, 'portfolio', id))
 }
