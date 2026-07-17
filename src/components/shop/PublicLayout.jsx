@@ -33,7 +33,7 @@ export default function PublicLayout() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="font-shop-body flex min-h-screen flex-col bg-white">
       <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <button
           type="button"

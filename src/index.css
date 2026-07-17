@@ -8,12 +8,26 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito-Variable.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Comic-style display font, used for headings/nav on the customer-facing
    shop site only — kept off body text and prices, since Bangers is hard to
    read at small sizes. */
 .font-comic {
   font-family: "Bangers", cursive;
   letter-spacing: 0.02em;
+}
+
+/* Warm, rounded body face for the customer-facing shop site — pairs with
+   Bangers headings without falling back to a generic system font. */
+.font-shop-body {
+  font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
 }
 
 @theme {
