@@ -19,7 +19,7 @@ export default function Home() {
           className="mx-auto h-48 w-48 rounded-xl border-4 border-black object-cover shadow-md sm:h-64 sm:w-64"
         />
         <h1 className="font-comic mt-6 text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
-        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
+        <p className="font-comic mx-auto mt-3 max-w-xl text-lg leading-relaxed tracking-wide text-slate-600">
           CutToons creates one-of-a-kind paintings on custom-cut MDF panels — hand-painted in acrylic and
           finished with a glossy epoxy coat. Every piece starts with your idea: a photo, a character, a
           memory. Panels are cut to shape with a jigsaw and finished with routed edge detailing, so no two
@@ -29,7 +29,7 @@ export default function Home() {
 
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
-        <p className="mt-1 text-sm text-slate-500">Available paintings, ready to ship or pick up.</p>
+        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
         <PaintingGrid
           items={forSaleItems}
           sold={false}
@@ -40,7 +40,7 @@ export default function Home() {
 
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Sold</h2>
-        <p className="mt-1 text-sm text-slate-500">A look at past work, for inspiration and sizing.</p>
+        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
         <PaintingGrid
           items={soldItems}
           sold
