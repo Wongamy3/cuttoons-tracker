@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db, hasDeposit, totalPaid, buildUpdateMessage } from '../db'
+import { hasDeposit, totalPaid, buildUpdateMessage } from '../db'
+import { useCollection } from '../lib/useCollection'
 import { DepositBadge, StatusBadge } from '../components/Badges'
 import { btnPrimary } from '../components/buttonStyles'
 import { copyToClipboard } from '../lib/clipboard'
@@ -26,7 +26,7 @@ export default function Dashboard() {
   const [search, setSearch] = useState('')
   const [copiedId, setCopiedId] = useState(null)
 
-  const orders = useLiveQuery(() => db.orders.toArray(), [])
+  const orders = useCollection('orders')
   const activeCount = orders ? orders.filter((o) => o.status !== 'Completed').length : 0
 
   async function handleCopyUpdate(order) {

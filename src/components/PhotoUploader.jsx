@@ -5,9 +5,13 @@ export default function PhotoUploader({ label, photos, onChange }) {
   const [previewIndex, setPreviewIndex] = useState(null)
 
   useEffect(() => {
-    const next = photos.map((blob) => URL.createObjectURL(blob))
+    const next = photos.map((p) => (p instanceof File ? URL.createObjectURL(p) : p.url))
     setUrls(next)
-    return () => next.forEach((url) => URL.revokeObjectURL(url))
+    return () => {
+      photos.forEach((p, i) => {
+        if (p instanceof File) URL.revokeObjectURL(next[i])
+      })
+    }
   }, [photos])
 
   function handleFiles(e) {

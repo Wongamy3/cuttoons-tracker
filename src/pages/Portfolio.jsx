@@ -1,20 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../db'
+import { useMemo, useRef, useState } from 'react'
+import { addPortfolioItem, deletePortfolioItem, uploadPhoto } from '../db'
+import { useCollection } from '../lib/useCollection'
 import { btnPrimary } from '../components/buttonStyles'
 
 function PortfolioThumb({ item, onDelete }) {
-  const [url, setUrl] = useState(null)
-
-  useEffect(() => {
-    const objectUrl = URL.createObjectURL(item.photo)
-    setUrl(objectUrl)
-    return () => URL.revokeObjectURL(objectUrl)
-  }, [item.photo])
-
   return (
     <div className="group relative aspect-square overflow-hidden rounded-lg border border-slate-200 bg-white">
-      {url && <img src={url} alt={item.caption || ''} className="h-full w-full object-cover" />}
+      <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
       {(item.caption || item.sizeTag) && (
         <div className="absolute inset-x-0 bottom-0 bg-black/60 px-2 py-1 text-[11px] text-white">
           {item.caption} {item.sizeTag && <span className="opacity-75">· {item.sizeTag}</span>}
@@ -33,29 +25,41 @@ function PortfolioThumb({ item, onDelete }) {
 }
 
 export default function Portfolio() {
-  const items = useLiveQuery(() => db.portfolio.orderBy('createdAt').reverse().toArray(), [])
+  const rawItems = useCollection('portfolio')
+  const items = useMemo(
+    () => (rawItems ? rawItems.slice().sort((a, b) => b.createdAt - a.createdAt) : rawItems),
+    [rawItems]
+  )
   const fileInputRef = useRef(null)
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   async function handleFiles(e) {
     const files = Array.from(e.target.files || [])
-    for (const photo of files) {
-      await db.portfolio.add({
-        photo,
-        caption: caption.trim(),
-        sizeTag: sizeTag.trim(),
-        createdAt: Date.now(),
-      })
-    }
-    setCaption('')
-    setSizeTag('')
     e.target.value = ''
+    if (!files.length) return
+    setUploading(true)
+    try {
+      for (const file of files) {
+        const photo = await uploadPhoto(file, 'portfolio')
+        await addPortfolioItem({
+          photo,
+          caption: caption.trim(),
+          sizeTag: sizeTag.trim(),
+          createdAt: Date.now(),
+        })
+      }
+      setCaption('')
+      setSizeTag('')
+    } finally {
+      setUploading(false)
+    }
   }
 
   async function handleDelete(id) {
     if (!confirm('Delete this photo from your portfolio?')) return
-    await db.portfolio.delete(id)
+    await deletePortfolioItem(id)
   }
 
   return (
@@ -76,8 +80,13 @@ export default function Portfolio() {
             className="w-28 rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
         </div>
-        <button type="button" onClick={() => fileInputRef.current?.click()} className={'w-full ' + btnPrimary}>
-          + Upload photo(s)
+        <button
+          type="button"
+          disabled={uploading}
+          onClick={() => fileInputRef.current?.click()}
+          className={'w-full disabled:opacity-60 ' + btnPrimary}
+        >
+          {uploading ? 'Uploading...' : '+ Upload photo(s)'}
         </button>
         <input
           ref={fileInputRef}

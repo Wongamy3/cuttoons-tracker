@@ -1,8 +1,15 @@
-import { exportDB, importInto } from 'dexie-export-import'
-import { db } from '../db'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
 
 export async function downloadBackup() {
-  const blob = await exportDB(db, { prettyJson: false })
+  const collections = ['orders', 'expenses', 'portfolio']
+  const data = {}
+  for (const name of collections) {
+    const snap = await getDocs(collection(db, name))
+    data[name] = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+  }
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
   const stamp = new Date().toISOString().slice(0, 10)
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -12,11 +19,4 @@ export async function downloadBackup() {
   a.click()
   a.remove()
   URL.revokeObjectURL(url)
-}
-
-export async function restoreBackup(file) {
-  await importInto(db, file, {
-    clearTablesBeforeImport: true,
-    overwriteValues: true,
-  })
 }

@@ -1,22 +1,72 @@
-import Dexie from 'dexie'
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc } from 'firebase/firestore'
+import { db as firestore } from './firebase'
 
-export const db = new Dexie('cuttoonsTracker')
+// --- Photo upload (Cloudinary, unsigned upload preset — no billing account needed) ---
+const CLOUDINARY_CLOUD_NAME = 'bhkm1h1v'
+const CLOUDINARY_UPLOAD_PRESET = 'cuttoons_unsigned'
 
-db.version(1).stores({
-  orders: '++id, customerName, depositReceived, status, createdAt',
-  portfolio: '++id, createdAt',
-})
+// Each photo in a form is either a pending local File (not yet uploaded) or
+// an already-uploaded { url, path } object. resolvePhotos uploads whichever
+// are still File instances and leaves already-uploaded ones untouched.
+export async function uploadPhoto(file, folder) {
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+  formData.append('folder', folder)
 
-db.version(2).stores({
-  orders: '++id, customerName, status, createdAt',
-  portfolio: '++id, createdAt',
-})
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData,
+  })
+  if (!res.ok) throw new Error('Photo upload failed')
+  const data = await res.json()
+  return { url: data.secure_url, path: data.public_id }
+}
 
-db.version(3).stores({
-  orders: '++id, customerName, status, createdAt',
-  portfolio: '++id, createdAt',
-  expenses: '++id, date, category, createdAt',
-})
+export async function resolvePhotos(photos, folder) {
+  return Promise.all((photos || []).map((p) => (p instanceof File ? uploadPhoto(p, folder) : p)))
+}
+
+// --- Orders ---
+export async function addOrder(data) {
+  const ref = await addDoc(collection(firestore, 'orders'), data)
+  return ref.id
+}
+export async function updateOrder(id, data) {
+  await updateDoc(doc(firestore, 'orders', id), data)
+}
+export async function getOrder(id) {
+  const snap = await getDoc(doc(firestore, 'orders', id))
+  return snap.exists() ? { id: snap.id, ...snap.data() } : null
+}
+export async function deleteOrder(id) {
+  await deleteDoc(doc(firestore, 'orders', id))
+}
+
+// --- Expenses ---
+export async function addExpense(data) {
+  const ref = await addDoc(collection(firestore, 'expenses'), data)
+  return ref.id
+}
+export async function updateExpense(id, data) {
+  await updateDoc(doc(firestore, 'expenses', id), data)
+}
+export async function getExpense(id) {
+  const snap = await getDoc(doc(firestore, 'expenses', id))
+  return snap.exists() ? { id: snap.id, ...snap.data() } : null
+}
+export async function deleteExpense(id) {
+  await deleteDoc(doc(firestore, 'expenses', id))
+}
+
+// --- Portfolio ---
+export async function addPortfolioItem(data) {
+  const ref = await addDoc(collection(firestore, 'portfolio'), data)
+  return ref.id
+}
+export async function deletePortfolioItem(id) {
+  await deleteDoc(doc(firestore, 'portfolio', id))
+}
 
 export const CONTACT_METHODS = [
   'Instagram DM',
@@ -66,14 +116,8 @@ export function blankOrder() {
   }
 }
 
-// Normalizes orders saved before multi-payment support existed
 export function normalizeOrder(order) {
-  if (order.payments) return order
-  const legacyPayment =
-    order.depositReceived && order.depositAmount
-      ? [{ amount: order.depositAmount, method: order.depositMethod || '', date: order.depositDate || '' }]
-      : []
-  return { ...order, payments: legacyPayment }
+  return order.payments ? order : { ...order, payments: [] }
 }
 
 export function totalPaid(payments) {
@@ -81,7 +125,7 @@ export function totalPaid(payments) {
 }
 
 export function hasDeposit(order) {
-  return (order.payments && order.payments.length > 0) || !!order.depositReceived
+  return !!(order.payments && order.payments.length > 0)
 }
 
 const STARTED_STAGES = ['In Progress', 'Finishing (Epoxy)', 'Ready for Pickup/Delivery']

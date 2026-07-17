@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { db, blankExpense, EXPENSE_CATEGORIES } from '../db'
+import { addExpense, updateExpense, getExpense, deleteExpense, resolvePhotos, blankExpense, EXPENSE_CATEGORIES } from '../db'
 import PhotoUploader from '../components/PhotoUploader'
 import { btnPrimary, btnDanger } from '../components/buttonStyles'
 
@@ -20,14 +20,15 @@ export default function ExpenseForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isNew = id === 'new'
-  const expenseId = isNew ? null : Number(id)
+  const expenseId = isNew ? null : id
 
   const [form, setForm] = useState(blankExpense())
   const [loading, setLoading] = useState(!isNew)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (isNew) return
-    db.expenses.get(expenseId).then((existing) => {
+    getExpense(expenseId).then((existing) => {
       if (existing) setForm(existing)
       setLoading(false)
     })
@@ -39,17 +40,24 @@ export default function ExpenseForm() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (isNew) {
-      await db.expenses.add(form)
-    } else {
-      await db.expenses.put({ ...form, id: expenseId })
+    setSubmitting(true)
+    try {
+      const receiptPhotos = await resolvePhotos(form.receiptPhotos, 'expenses/receipts')
+      const data = { ...form, receiptPhotos }
+      if (isNew) {
+        await addExpense(data)
+      } else {
+        await updateExpense(expenseId, data)
+      }
+      navigate('/taxes')
+    } finally {
+      setSubmitting(false)
     }
-    navigate('/taxes')
   }
 
   async function handleDelete() {
     if (!confirm('Delete this expense? This cannot be undone.')) return
-    await db.expenses.delete(expenseId)
+    await deleteExpense(expenseId)
     navigate('/taxes')
   }
 
@@ -125,11 +133,11 @@ export default function ExpenseForm() {
       </Field>
 
       <div className="flex gap-3 pt-2">
-        <button type="submit" className={'flex-1 ' + btnPrimary}>
-          {isNew ? 'Add expense' : 'Save changes'}
+        <button type="submit" disabled={submitting} className={'flex-1 disabled:opacity-60 ' + btnPrimary}>
+          {submitting ? 'Saving...' : isNew ? 'Add expense' : 'Save changes'}
         </button>
         {!isNew && (
-          <button type="button" onClick={handleDelete} className={btnDanger}>
+          <button type="button" onClick={handleDelete} disabled={submitting} className={btnDanger}>
             Delete
           </button>
         )}

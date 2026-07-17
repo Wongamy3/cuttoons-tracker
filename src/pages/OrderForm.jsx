@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { db, blankOrder, normalizeOrder, totalPaid, CONTACT_METHODS, SIZE_OPTIONS, STATUS_STAGES, priceForSize } from '../db'
+import {
+  addOrder,
+  updateOrder,
+  getOrder,
+  deleteOrder,
+  resolvePhotos,
+  blankOrder,
+  normalizeOrder,
+  totalPaid,
+  CONTACT_METHODS,
+  SIZE_OPTIONS,
+  STATUS_STAGES,
+  priceForSize,
+} from '../db'
 import PhotoUploader from '../components/PhotoUploader'
 import PaymentsSection from '../components/PaymentsSection'
 import { btnPrimary, btnDanger } from '../components/buttonStyles'
@@ -21,14 +34,15 @@ export default function OrderForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isNew = id === 'new'
-  const orderId = isNew ? null : Number(id)
+  const orderId = isNew ? null : id
 
   const [form, setForm] = useState(blankOrder())
   const [loading, setLoading] = useState(!isNew)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (isNew) return
-    db.orders.get(orderId).then((existing) => {
+    getOrder(orderId).then((existing) => {
       if (existing) setForm(normalizeOrder(existing))
       setLoading(false)
     })
@@ -52,17 +66,27 @@ export default function OrderForm() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (isNew) {
-      await db.orders.add(form)
-    } else {
-      await db.orders.put({ ...form, id: orderId })
+    setSubmitting(true)
+    try {
+      const [referencePhotos, progressPhotos] = await Promise.all([
+        resolvePhotos(form.referencePhotos, 'orders/reference'),
+        resolvePhotos(form.progressPhotos, 'orders/progress'),
+      ])
+      const data = { ...form, referencePhotos, progressPhotos }
+      if (isNew) {
+        await addOrder(data)
+      } else {
+        await updateOrder(orderId, data)
+      }
+      navigate('/')
+    } finally {
+      setSubmitting(false)
     }
-    navigate('/')
   }
 
   async function handleDelete() {
     if (!confirm('Delete this order? This cannot be undone.')) return
-    await db.orders.delete(orderId)
+    await deleteOrder(orderId)
     navigate('/')
   }
 
@@ -176,11 +200,11 @@ export default function OrderForm() {
       />
 
       <div className="flex gap-3 pt-2">
-        <button type="submit" className={'flex-1 ' + btnPrimary}>
-          {isNew ? 'Add order' : 'Save changes'}
+        <button type="submit" disabled={submitting} className={'flex-1 disabled:opacity-60 ' + btnPrimary}>
+          {submitting ? 'Saving...' : isNew ? 'Add order' : 'Save changes'}
         </button>
         {!isNew && (
-          <button type="button" onClick={handleDelete} className={btnDanger}>
+          <button type="button" onClick={handleDelete} disabled={submitting} className={btnDanger}>
             Delete
           </button>
         )}

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../db'
+import { useCollection } from '../lib/useCollection'
 import { btnPrimary } from '../components/buttonStyles'
 
 function yearOf(dateStr) {
@@ -10,7 +9,7 @@ function yearOf(dateStr) {
 
 export default function Taxes() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
-  const expenses = useLiveQuery(() => db.expenses.toArray(), [])
+  const expenses = useCollection('expenses')
 
   const { yearExpenses, total, byCategory } = useMemo(() => {
     if (!expenses) return { yearExpenses: [], total: 0, byCategory: [] }

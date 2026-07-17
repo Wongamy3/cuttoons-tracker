@@ -1,64 +1,44 @@
-import { useRef, useState } from 'react'
-import { downloadBackup, restoreBackup } from '../lib/backup'
+import { useState } from 'react'
+import { signOut } from 'firebase/auth'
+import { downloadBackup } from '../lib/backup'
+import { auth } from '../firebase'
+import { useAuth } from '../hooks/useAuth'
 import { btnPrimary, btnSecondary } from '../components/buttonStyles'
 
 export default function Settings() {
-  const fileInputRef = useRef(null)
+  const { user } = useAuth()
   const [status, setStatus] = useState('')
 
   async function handleExport() {
-    setStatus('Preparing backup...')
+    setStatus('Preparing export...')
     try {
       await downloadBackup()
-      setStatus('Backup downloaded. Save it somewhere safe, like Google Drive or email it to yourself.')
+      setStatus('Export downloaded — a snapshot copy of your orders, expenses, and portfolio.')
     } catch (err) {
-      setStatus('Something went wrong creating the backup: ' + err.message)
-    }
-  }
-
-  async function handleImport(e) {
-    const file = e.target.files?.[0]
-    e.target.value = ''
-    if (!file) return
-    if (
-      !confirm(
-        'Restoring a backup will replace ALL current orders and portfolio photos on this device. Continue?'
-      )
-    )
-      return
-    setStatus('Restoring backup...')
-    try {
-      await restoreBackup(file)
-      setStatus('Backup restored successfully.')
-    } catch (err) {
-      setStatus('Restore failed: ' + err.message)
+      setStatus('Something went wrong creating the export: ' + err.message)
     }
   }
 
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-2">
-        <h2 className="font-medium text-black">Backup your data</h2>
+        <h2 className="font-medium text-black">Your data</h2>
         <p className="text-sm text-slate-500">
-          All your orders and photos live only on this device's browser. Export a backup regularly and
-          save it to Google Drive, email, or your computer — if you lose or reset this device without a
-          backup, this data can't be recovered.
+          Your orders, expenses, portfolio, and photos are stored securely in the cloud and sync
+          automatically across every device you sign into. You don't need to manually back anything up —
+          but you can download a snapshot copy any time for your own records.
         </p>
         <button onClick={handleExport} className={'w-full ' + btnPrimary}>
-          Export backup
+          Download a copy
         </button>
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-2">
-        <h2 className="font-medium text-black">Restore from backup</h2>
-        <p className="text-sm text-slate-500">
-          Restoring will replace everything currently on this device with the contents of the backup
-          file.
-        </p>
-        <button onClick={() => fileInputRef.current?.click()} className={'w-full ' + btnSecondary}>
-          Choose backup file...
+        <h2 className="font-medium text-black">Signed in</h2>
+        <p className="text-sm text-slate-500">{user?.email}</p>
+        <button onClick={() => signOut(auth)} className={'w-full ' + btnSecondary}>
+          Sign out
         </button>
-        <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={handleImport} />
       </section>
 
       {status && <p className="text-sm text-slate-600">{status}</p>}
