@@ -1,10 +1,38 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import * as XLSX from 'xlsx'
 import { useCollection } from '../lib/useCollection'
-import { btnPrimary } from '../components/buttonStyles'
+import { btnPrimary, btnSecondary } from '../components/buttonStyles'
 
 function yearOf(dateStr) {
   return dateStr ? new Date(dateStr + 'T00:00:00').getFullYear() : null
+}
+
+function exportExpensesToExcel(year, yearExpenses) {
+  const rows = yearExpenses.map((e) => ({
+    Date: e.date ? new Date(e.date + 'T00:00:00').toLocaleDateString() : '',
+    Vendor: e.vendor || '',
+    Description: e.description || '',
+    Category: e.category || '',
+    Amount: parseFloat(e.amount) || 0,
+    Notes: e.notes || '',
+    'Receipt Photo(s)': (e.receiptPhotos || []).map((p) => p.url).join(', '),
+  }))
+
+  const sheet = XLSX.utils.json_to_sheet(rows)
+  sheet['!cols'] = [
+    { wch: 12 },
+    { wch: 20 },
+    { wch: 28 },
+    { wch: 30 },
+    { wch: 12 },
+    { wch: 30 },
+    { wch: 40 },
+  ]
+
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, sheet, `${year}`)
+  XLSX.writeFile(workbook, `CutToons-Expenses-${year}.xlsx`)
 }
 
 export default function Taxes() {
@@ -51,9 +79,19 @@ export default function Taxes() {
         </button>
       </div>
 
-      <Link to="/taxes/new" className={'block text-center ' + btnPrimary}>
-        + Add Expense
-      </Link>
+      <div className="flex gap-2">
+        <Link to="/taxes/new" className={'flex-1 text-center ' + btnPrimary}>
+          + Add Expense
+        </Link>
+        <button
+          type="button"
+          onClick={() => exportExpensesToExcel(selectedYear, yearExpenses)}
+          disabled={yearExpenses.length === 0}
+          className={'flex-1 ' + btnSecondary + ' disabled:cursor-not-allowed disabled:opacity-40'}
+        >
+          Export to Excel
+        </button>
+      </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-3">
         <p className="text-sm font-medium text-slate-700">Total for {selectedYear}</p>
