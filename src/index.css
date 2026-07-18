@@ -37,6 +37,38 @@
   background-size: 12px 12px;
 }
 
+/* Looping "sign itself" animation for the hand-drawn signature: draws in,
+   holds, retracts, pauses, repeats — entirely CSS-driven (no JS timers)
+   once the measured path length is set as --sig-len by the component. */
+@keyframes sig-draw {
+  0% { stroke-dashoffset: var(--sig-len); }
+  27% { stroke-dashoffset: 0; }
+  75% { stroke-dashoffset: 0; }
+  88% { stroke-dashoffset: var(--sig-len); }
+  100% { stroke-dashoffset: var(--sig-len); }
+}
+@keyframes sig-fill {
+  0% { opacity: 0; }
+  32% { opacity: 0; }
+  40% { opacity: 1; }
+  72% { opacity: 1; }
+  80% { opacity: 0; }
+  100% { opacity: 0; }
+}
+.signature-stroke-anim {
+  stroke-dasharray: var(--sig-len);
+  animation: sig-draw 6s ease-in-out infinite;
+}
+.signature-fill-anim {
+  animation: sig-fill 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-stroke-anim,
+  .signature-fill-anim {
+    animation: none;
+  }
+}
+
 @theme {
   --color-brand-50: #eef4fc;
   --color-brand-100: #dbe7f7;
