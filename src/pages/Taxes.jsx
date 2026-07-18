@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx'
+import { jsPDF } from 'jspdf'
 import { useCollection } from '../lib/useCollection'
 import { btnPrimary, btnSecondary } from '../components/buttonStyles'
 
@@ -35,8 +36,123 @@ function exportExpensesToExcel(year, yearExpenses) {
   XLSX.writeFile(workbook, `CutToons-Expenses-${year}.xlsx`)
 }
 
+function fetchImageAsDataUrl(url) {
+  return fetch(url)
+    .then((res) => res.blob())
+    .then(
+      (blob) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(blob)
+        }),
+    )
+}
+
+async function exportExpensesToPDF(year, yearExpenses, total, byCategory) {
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+  const pageWidth = doc.internal.pageSize.getWidth()
+  const pageHeight = doc.internal.pageSize.getHeight()
+  const margin = 40
+  const contentWidth = pageWidth - margin * 2
+  let y = margin
+
+  function ensureSpace(height) {
+    if (y + height > pageHeight - margin) {
+      doc.addPage()
+      y = margin
+    }
+  }
+
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(20)
+  doc.text(`CutToons Expenses — ${year}`, margin, y)
+  y += 26
+
+  doc.setFontSize(13)
+  doc.text(`Total: $${total.toFixed(2)}`, margin, y)
+  y += 18
+
+  if (byCategory.length > 0) {
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    for (const [category, amt] of byCategory) {
+      ensureSpace(14)
+      doc.text(category, margin, y)
+      doc.text(`$${amt.toFixed(2)}`, pageWidth - margin, y, { align: 'right' })
+      y += 14
+    }
+  }
+  y += 8
+  doc.setDrawColor(200)
+  doc.line(margin, y, pageWidth - margin, y)
+  y += 22
+
+  for (const e of yearExpenses) {
+    const dateStr = e.date ? new Date(e.date + 'T00:00:00').toLocaleDateString() : ''
+
+    ensureSpace(46)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(12)
+    doc.text(e.vendor || 'Unnamed purchase', margin, y)
+    doc.text(`$${(parseFloat(e.amount) || 0).toFixed(2)}`, pageWidth - margin, y, { align: 'right' })
+    y += 16
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(110)
+    doc.text(`${dateStr}   •   ${e.category || ''}`, margin, y)
+    doc.setTextColor(0)
+    y += 16
+
+    if (e.description) {
+      const lines = doc.splitTextToSize(`Description: ${e.description}`, contentWidth)
+      ensureSpace(lines.length * 12)
+      doc.text(lines, margin, y)
+      y += lines.length * 12 + 4
+    }
+
+    if (e.notes) {
+      const lines = doc.splitTextToSize(`Notes: ${e.notes}`, contentWidth)
+      ensureSpace(lines.length * 12)
+      doc.text(lines, margin, y)
+      y += lines.length * 12 + 4
+    }
+
+    for (const photo of e.receiptPhotos || []) {
+      try {
+        const dataUrl = await fetchImageAsDataUrl(photo.url)
+        const props = doc.getImageProperties(dataUrl)
+        const maxSize = 200
+        const scale = Math.min(maxSize / props.width, maxSize / props.height, 1)
+        const w = props.width * scale
+        const h = props.height * scale
+        ensureSpace(h + 10)
+        doc.addImage(dataUrl, props.fileType, margin, y, w, h)
+        y += h + 10
+      } catch {
+        ensureSpace(14)
+        doc.setFontSize(9)
+        doc.setTextColor(150)
+        doc.text('(Receipt image could not be loaded)', margin, y)
+        doc.setTextColor(0)
+        y += 14
+      }
+    }
+
+    y += 8
+    doc.setDrawColor(230)
+    doc.line(margin, y, pageWidth - margin, y)
+    y += 18
+  }
+
+  doc.save(`CutToons-Expenses-${year}.pdf`)
+}
+
 export default function Taxes() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+  const [pdfExporting, setPdfExporting] = useState(false)
   const expenses = useCollection('expenses')
 
   const { yearExpenses, total, byCategory } = useMemo(() => {
@@ -56,6 +172,15 @@ export default function Taxes() {
 
     return { yearExpenses: filtered, total: sum, byCategory }
   }, [expenses, selectedYear])
+
+  async function handleExportPDF() {
+    setPdfExporting(true)
+    try {
+      await exportExpensesToPDF(selectedYear, yearExpenses, total, byCategory)
+    } finally {
+      setPdfExporting(false)
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -79,10 +204,11 @@ export default function Taxes() {
         </button>
       </div>
 
+      <Link to="/taxes/new" className={'block text-center ' + btnPrimary}>
+        + Add Expense
+      </Link>
+
       <div className="flex gap-2">
-        <Link to="/taxes/new" className={'flex-1 text-center ' + btnPrimary}>
-          + Add Expense
-        </Link>
         <button
           type="button"
           onClick={() => exportExpensesToExcel(selectedYear, yearExpenses)}
@@ -90,6 +216,14 @@ export default function Taxes() {
           className={'flex-1 ' + btnSecondary + ' disabled:cursor-not-allowed disabled:opacity-40'}
         >
           Export to Excel
+        </button>
+        <button
+          type="button"
+          onClick={handleExportPDF}
+          disabled={yearExpenses.length === 0 || pdfExporting}
+          className={'flex-1 ' + btnSecondary + ' disabled:cursor-not-allowed disabled:opacity-40'}
+        >
+          {pdfExporting ? 'Exporting…' : 'Export to PDF'}
         </button>
       </div>
 
