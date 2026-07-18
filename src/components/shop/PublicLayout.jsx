@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../../assets/cuttoons-logo.png'
 import Footer from './Footer'
+import { InstagramIcon, FacebookIcon } from './SocialIcons'
+import { INSTAGRAM_HANDLE, FACEBOOK_PAGE } from '../../lib/shopUtils'
 
 function MenuIcon(props) {
   return (
@@ -34,17 +36,37 @@ export default function PublicLayout() {
 
   return (
     <div className="font-shop-body flex min-h-screen flex-col bg-white">
-      <div className="halftone-bg sticky top-0 z-20 bg-white/95 backdrop-blur">
-        <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur">
+        <header className="grid grid-cols-3 items-center border-b border-slate-200 px-4 py-3">
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
-            className="flex h-9 w-9 items-center justify-center text-black"
+            className="flex h-9 w-9 items-center justify-center justify-self-start text-black"
             aria-label={open ? 'Close menu' : 'Open menu'}
           >
             {open ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
           </button>
-          <img src={logo} alt="CutToons" className="h-10 w-auto" />
+          <img src={logo} alt="CutToons" className="h-10 w-auto justify-self-center" />
+          <div className="flex items-center justify-self-end gap-2">
+            <a
+              href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition duration-150 active:scale-90"
+            >
+              <InstagramIcon className="h-4 w-4" />
+            </a>
+            <a
+              href={`https://facebook.com/${FACEBOOK_PAGE}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Facebook"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition duration-150 active:scale-90"
+            >
+              <FacebookIcon className="h-4 w-4" />
+            </a>
+          </div>
         </header>
 
         {open && (
