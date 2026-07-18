@@ -34,7 +34,7 @@ export default function PublicLayout() {
 
   return (
     <div className="font-shop-body flex min-h-screen flex-col bg-white">
-      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur">
+      <div className="halftone-bg sticky top-0 z-20 bg-white/95 backdrop-blur">
         <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
           <button
             type="button"
