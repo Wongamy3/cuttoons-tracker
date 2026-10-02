@@ -1,4 +1,4 @@
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore'
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc, writeBatch } from 'firebase/firestore'
 import { db as firestore } from './firebase'
 
 // --- Photo upload (Cloudinary, unsigned upload preset — no billing account needed) ---
@@ -81,6 +81,26 @@ export async function updateForSaleItem(id, data) {
 }
 export async function deleteForSaleItem(id) {
   await deleteDoc(doc(firestore, 'forSale', id))
+}
+
+// Moves a For Sale item into the Portfolio (Sold) collection as a single
+// atomic batch — either both the add and the remove happen, or neither does,
+// so a sold painting can never get duplicated or disappear if one write fails.
+export async function markForSaleItemSold(item) {
+  const batch = writeBatch(firestore)
+  const portfolioRef = doc(collection(firestore, 'portfolio'))
+  batch.set(portfolioRef, {
+    photo: item.photo,
+    caption: item.caption || '',
+    sizeTag: item.sizeTag || '',
+    price: item.price || '',
+    description: item.description || '',
+    category: 'Other',
+    displayOrder: '',
+    createdAt: Date.now(),
+  })
+  batch.delete(doc(firestore, 'forSale', item.id))
+  await batch.commit()
 }
 
 export const CONTACT_METHODS = [

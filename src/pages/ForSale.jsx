@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { addForSaleItem, updateForSaleItem, deleteForSaleItem, uploadPhoto } from '../db'
+import { addForSaleItem, updateForSaleItem, deleteForSaleItem, markForSaleItemSold, uploadPhoto } from '../db'
 import { useCollection } from '../lib/useCollection'
 import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
 
@@ -54,6 +54,7 @@ export default function ForSale() {
   const [editPrice, setEditPrice] = useState('')
   const [editDescription, setEditDescription] = useState('')
   const [saving, setSaving] = useState(false)
+  const [markingSold, setMarkingSold] = useState(false)
 
   async function handleFiles(e) {
     const files = Array.from(e.target.files || [])
@@ -110,6 +111,17 @@ export default function ForSale() {
     if (!confirm('Remove this painting from your For Sale inventory? (e.g. once it sells)')) return
     if (previewItem?.id === id) setPreviewItem(null)
     await deleteForSaleItem(id)
+  }
+
+  async function handleMarkSold(item) {
+    if (!confirm('Mark this painting as sold? It will move from For Sale to your Portfolio (Sold) section.')) return
+    setMarkingSold(true)
+    try {
+      await markForSaleItemSold(item)
+      if (previewItem?.id === item.id) setPreviewItem(null)
+    } finally {
+      setMarkingSold(false)
+    }
   }
 
   return (
@@ -229,6 +241,14 @@ export default function ForSale() {
                 className={'w-full disabled:opacity-60 ' + btnPrimary}
               >
                 {saving ? 'Saving...' : 'Save changes'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleMarkSold(previewItem)}
+                disabled={markingSold}
+                className="w-full rounded-full bg-green-600 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-green-600/25 transition duration-150 active:scale-95 hover:bg-green-700 disabled:opacity-60"
+              >
+                {markingSold ? 'Marking sold...' : '✓ Mark Sold'}
               </button>
             </div>
 
