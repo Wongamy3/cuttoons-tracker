@@ -62,7 +62,7 @@ export default function Contact() {
           <button
             type="button"
             onClick={() => setShowForm(true)}
-            className="flex w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-300 p-4 text-sm font-semibold text-slate-600 transition duration-150 hover:border-comic-400 hover:text-comic-600 active:scale-[0.98]"
+            className="font-comic flex w-full items-center justify-center rounded-xl bg-comic-500 p-4 text-lg tracking-wide text-white shadow-md transition duration-150 hover:bg-comic-600 active:scale-[0.98]"
           >
             Prefer not to use Instagram or Facebook? Fill out a form instead →
           </button>
