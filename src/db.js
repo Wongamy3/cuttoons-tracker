@@ -118,6 +118,7 @@ export const SIZE_OPTIONS = Array.from({ length: 8 }, (_, i) => `${i + 1}ft`)
 export const PICKUP_OPTIONS = ['Pick Up in San Antonio', 'Ship']
 
 export const PORTFOLIO_CATEGORIES = [
+  'CutToons Originals',
   'Dragon Ball Z',
   'My Hero Academia',
   'One Piece',
