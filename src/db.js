@@ -124,9 +124,13 @@ export const PORTFOLIO_CATEGORIES = [
   'Yu Gi Oh',
   'Pokemon',
   'Jujutsu Kaisen',
+  'Demon Slayer',
+  'Ghibli',
+  'TV Characters',
   'Sports',
   'Cartoons',
   'Tables',
+  'Business Signs',
   'Music',
   'Other',
 ]
