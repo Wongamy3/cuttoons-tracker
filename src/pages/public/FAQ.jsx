@@ -38,7 +38,7 @@ const faqs = [
     answer: (
       <p>
         Yes! Every painting comes ready to hang. Depending on the size and weight, we'll attach either a
-        hanging track or sawtooth hangers so installation is quick and secure.
+        French cleat or sawtooth hangers so installation is quick and secure.
       </p>
     ),
   },
