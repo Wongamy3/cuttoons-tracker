@@ -20,7 +20,7 @@ export default function PortfolioCategorySection({ category, items, onSelect }) 
   return (
     <div id={categorySlug(category)} className="mt-8 scroll-mt-24">
       <h3 className="font-comic text-xl text-black">{category}</h3>
-      <PaintingGrid items={visibleItems} sold onSelect={onSelect} emptyText="" />
+      <PaintingGrid items={visibleItems} allItems={items} sold onSelect={onSelect} emptyText="" />
       {hiddenCount > 0 && (
         <div className="mt-4 flex justify-center">
           <button

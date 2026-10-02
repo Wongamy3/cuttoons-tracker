@@ -11,7 +11,13 @@ import AnimatedSignature from '../../components/shop/AnimatedSignature'
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
   const soldGroups = groupedPortfolio(useCollection('portfolio'))
-  const [previewItem, setPreviewItem] = useState(null)
+  const [previewList, setPreviewList] = useState(null)
+  const [previewIndex, setPreviewIndex] = useState(0)
+
+  function openPreview(list, index) {
+    setPreviewList(list)
+    setPreviewIndex(index)
+  }
 
   function scrollToCategory(category) {
     document.getElementById(categorySlug(category))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -56,7 +62,7 @@ export default function Home() {
         <PaintingGrid
           items={forSaleItems}
           sold={false}
-          onSelect={setPreviewItem}
+          onSelect={openPreview}
           emptyText="Nothing available right now — check back soon!"
         />
       </section>
@@ -100,12 +106,17 @@ export default function Home() {
             key={group.category}
             category={group.category}
             items={group.items}
-            onSelect={setPreviewItem}
+            onSelect={openPreview}
           />
         ))}
       </section>
 
-      <PaintingPreview item={previewItem} onClose={() => setPreviewItem(null)} />
+      <PaintingPreview
+        items={previewList}
+        index={previewIndex}
+        onNavigate={setPreviewIndex}
+        onClose={() => setPreviewList(null)}
+      />
     </main>
   )
 }

@@ -6,7 +6,8 @@ import PaintingPreview from '../../components/shop/PaintingPreview'
 
 export default function Shop() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
-  const [previewItem, setPreviewItem] = useState(null)
+  const [previewList, setPreviewList] = useState(null)
+  const [previewIndex, setPreviewIndex] = useState(0)
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
@@ -15,10 +16,18 @@ export default function Shop() {
       <PaintingGrid
         items={forSaleItems}
         sold={false}
-        onSelect={setPreviewItem}
+        onSelect={(list, index) => {
+          setPreviewList(list)
+          setPreviewIndex(index)
+        }}
         emptyText="Nothing available right now — check back soon!"
       />
-      <PaintingPreview item={previewItem} onClose={() => setPreviewItem(null)} />
+      <PaintingPreview
+        items={previewList}
+        index={previewIndex}
+        onNavigate={setPreviewIndex}
+        onClose={() => setPreviewList(null)}
+      />
     </main>
   )
 }

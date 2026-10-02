@@ -1,6 +1,6 @@
 import { itemSubtitle } from '../../lib/shopUtils'
 
-export default function PaintingGrid({ items, sold, onSelect, emptyText }) {
+export default function PaintingGrid({ items, allItems, sold, onSelect, emptyText }) {
   if (items === undefined) return <p className="mt-3 text-sm text-slate-400">Loading...</p>
 
   if (items.length === 0) {
@@ -11,13 +11,15 @@ export default function PaintingGrid({ items, sold, onSelect, emptyText }) {
     )
   }
 
+  const navList = allItems || items
+
   return (
     <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
       {items.map((item) => (
         <button
           key={item.id}
           type="button"
-          onClick={() => onSelect(item)}
+          onClick={() => onSelect(navList, navList.findIndex((i) => i.id === item.id))}
           className="overflow-hidden rounded-xl border border-slate-200 bg-white text-left transition duration-150 hover:shadow-md active:scale-95"
         >
           <div className="relative aspect-square overflow-hidden bg-slate-100">
