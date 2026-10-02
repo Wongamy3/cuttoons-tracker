@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const PAYMENT_METHODS = ['Cash', 'Cash App', 'Apple Pay']
 
 const faqs = [
@@ -20,6 +22,45 @@ const faqs = [
           ))}
         </div>
       </>
+    ),
+  },
+  {
+    question: 'Do you require payment up front?',
+    answer: (
+      <p>
+        Just a deposit to get started — it reserves your spot in the queue and covers materials. The
+        remaining balance isn't due until your piece is finished.
+      </p>
+    ),
+  },
+  {
+    question: 'Do the pieces come with hardware to hang?',
+    answer: (
+      <p>
+        Yes! Every painting comes ready to hang. Depending on the size and weight, we'll attach either a
+        hanging track or sawtooth hangers so installation is quick and secure.
+      </p>
+    ),
+  },
+  {
+    question: 'Can you add lights?',
+    answer: (
+      <p>
+        Yes! For an additional fee, we can install color-changing LED lights to make your piece really
+        stand out.
+      </p>
+    ),
+  },
+  {
+    question: 'How long do custom orders take?',
+    answer: (
+      <p>
+        Turnaround depends on how many orders are ahead of yours — you can check our current queue on the{' '}
+        <Link to="/shop/contact" className="font-semibold text-comic-600 underline underline-offset-2">
+          Contact Us
+        </Link>{' '}
+        page. Feel free to send us a message for a more specific estimate.
+      </p>
     ),
   },
 ]
