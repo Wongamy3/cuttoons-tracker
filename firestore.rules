@@ -1,6 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Shape-validated public order inquiries from the Contact Us form. Locks
+    // down everything that could let a public submission masquerade as a
+    // further-along/paid order, and caps text/photo-array sizes as basic
+    // spam mitigation. Reading, updating, and deleting orders still always
+    // requires being signed in as the shop owner (below).
+    function isValidPublicInquiry(data) {
+      return data.keys().hasOnly([
+          'customerName', 'contactMethod', 'contactInfo', 'orderPlacedDate',
+          'ideaDescription', 'referencePhotos', 'size', 'payments', 'totalPrice',
+          'status', 'dueDate', 'notes', 'progressPhotos', 'createdAt'
+        ])
+        && data.contactMethod == 'Website Form'
+        && data.status == 'New Inquiry'
+        && data.payments.size() == 0
+        && data.progressPhotos.size() == 0
+        && data.dueDate == ''
+        && data.notes == ''
+        && data.customerName is string && data.customerName.size() > 0 && data.customerName.size() < 200
+        && data.contactInfo is string && data.contactInfo.size() > 0 && data.contactInfo.size() < 300
+        && data.ideaDescription is string && data.ideaDescription.size() < 3000
+        && data.referencePhotos is list && data.referencePhotos.size() < 10
+        && data.createdAt is number;
+    }
+    match /orders/{orderId} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email in ['wong.amaymay@gmail.com', 'floressart92@gmail.com'];
+      allow create: if (request.auth != null
+          && request.auth.token.email in ['wong.amaymay@gmail.com', 'floressart92@gmail.com'])
+        || isValidPublicInquiry(request.resource.data);
+    }
     // Public read-only access for the customer-facing shop page (For Sale +
     // Previously Sold sections). Writes still require being signed in below.
     match /forSale/{itemId} {

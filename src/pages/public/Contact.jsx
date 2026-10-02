@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { InstagramIcon, FacebookIcon } from '../../components/shop/SocialIcons'
 import { INSTAGRAM_HANDLE, FACEBOOK_PAGE } from '../../lib/shopUtils'
 import { useDocument } from '../../lib/useDocument'
+import InquiryForm from '../../components/shop/InquiryForm'
 
 export default function Contact() {
   const queueStats = useDocument('queueStats', 'current')
+  const [showForm, setShowForm] = useState(false)
 
   return (
     <main className="mx-auto max-w-2xl px-4 pb-16 pt-8">
@@ -42,6 +45,28 @@ export default function Contact() {
           <FacebookIcon className="h-6 w-6 text-black" />
           <span className="font-medium text-black">CutToons</span>
         </a>
+      </div>
+
+      <div className="mt-8 border-t border-slate-200 pt-6">
+        {showForm ? (
+          <>
+            <h2 className="font-comic text-xl text-black">Send Us Your Idea</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Don't use Instagram or Facebook? Fill out the form below and we'll get back to you.
+            </p>
+            <div className="mt-4">
+              <InquiryForm />
+            </div>
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="flex w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-300 p-4 text-sm font-semibold text-slate-600 transition duration-150 hover:border-comic-400 hover:text-comic-600 active:scale-[0.98]"
+          >
+            Prefer not to use Instagram or Facebook? Fill out a form instead →
+          </button>
+        )}
       </div>
     </main>
   )
