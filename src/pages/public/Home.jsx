@@ -11,6 +11,7 @@ import AnimatedSignature from '../../components/shop/AnimatedSignature'
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
   const soldGroups = groupedPortfolio(useCollection('portfolio'))
+  const allSoldItems = soldGroups ? soldGroups.flatMap((g) => g.items) : soldGroups
   const [previewList, setPreviewList] = useState(null)
   const [previewIndex, setPreviewIndex] = useState(0)
 
@@ -106,6 +107,7 @@ export default function Home() {
             key={group.category}
             category={group.category}
             items={group.items}
+            navItems={allSoldItems}
             onSelect={openPreview}
           />
         ))}

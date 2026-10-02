@@ -1,6 +1,14 @@
 import { useEffect } from 'react'
 import { itemSubtitle } from '../../lib/shopUtils'
-import { btnSecondary } from '../buttonStyles'
+
+function CloseIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  )
+}
 
 function ChevronLeftIcon(props) {
   return (
@@ -61,9 +69,20 @@ export default function PaintingPreview({ items, index, onNavigate, onClose }) {
       )}
 
       <div
-        className="max-h-full w-full max-w-sm overflow-y-auto rounded-lg bg-white p-3"
+        className="relative max-h-full w-full max-w-sm overflow-y-auto rounded-lg bg-white p-3"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="flex items-center justify-between gap-2 pb-2">
+          <p className="font-comic text-lg text-black">{item.category || ' '}</p>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition duration-150 hover:bg-slate-200 active:scale-90"
+          >
+            <CloseIcon className="h-4 w-4" />
+          </button>
+        </div>
         <img
           src={item.photo?.url}
           alt={item.caption || ''}
@@ -75,11 +94,6 @@ export default function PaintingPreview({ items, index, onNavigate, onClose }) {
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">{item.description}</p>
           )}
           {item.price && <p className="mt-2 text-xl font-bold text-comic-600">${Number(item.price).toFixed(2)}</p>}
-        </div>
-        <div className="mt-3 flex justify-center">
-          <button type="button" onClick={onClose} className={btnSecondary}>
-            Close
-          </button>
         </div>
       </div>
 
