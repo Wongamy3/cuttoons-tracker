@@ -61,7 +61,13 @@ export default function Home() {
         />
       </section>
 
-      <section className="mt-10">
+      <div className="my-12 flex items-center gap-3" aria-hidden="true">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-slate-300" />
+        <span className="h-2 w-2 rounded-full bg-comic-500" />
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-300" />
+      </div>
+
+      <section>
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
 
@@ -72,9 +78,12 @@ export default function Home() {
                 key={group.category}
                 type="button"
                 onClick={() => scrollToCategory(group.category)}
-                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-black transition duration-150 hover:border-comic-400 hover:text-comic-600 active:scale-95"
+                className="group inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-sm ring-1 ring-slate-200 transition duration-150 hover:-translate-y-0.5 hover:shadow-md hover:ring-comic-300 active:scale-95 active:translate-y-0"
               >
-                {group.category} <span className="text-slate-400">({group.items.length})</span>
+                {group.category}
+                <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-xs font-bold text-slate-500 transition duration-150 group-hover:bg-comic-100 group-hover:text-comic-600">
+                  {group.items.length}
+                </span>
               </button>
             ))}
           </div>
