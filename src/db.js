@@ -1,4 +1,4 @@
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc } from 'firebase/firestore'
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore'
 import { db as firestore } from './firebase'
 
 // --- Photo upload (Cloudinary, unsigned upload preset — no billing account needed) ---
@@ -126,6 +126,18 @@ export const STATUS_STAGES = [
   'Ready for Pickup/Delivery',
   'Completed',
 ]
+
+// Statuses counted toward the public-facing "current queue" shown on the
+// Contact Us page — orders taken on but not yet in the finishing/delivery
+// stretch.
+export const QUEUE_STATUSES = ['New Inquiry', 'Details Finalized', 'Deposit Received', 'In Progress']
+
+// Publishes just an aggregate count to a public-readable doc (queueStats/current)
+// so the customer-facing Contact page can show current queue size without any
+// customer order data (names, contact info, photos) ever being publicly readable.
+export async function publishQueueCount(count) {
+  await setDoc(doc(firestore, 'queueStats', 'current'), { count, updatedAt: Date.now() })
+}
 
 export function blankOrder() {
   return {

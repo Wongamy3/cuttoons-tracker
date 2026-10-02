@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { hasDeposit, totalPaid, buildUpdateMessage } from '../db'
+import { hasDeposit, totalPaid, buildUpdateMessage, publishQueueCount, QUEUE_STATUSES } from '../db'
 import { useCollection } from '../lib/useCollection'
 import { DepositBadge, StatusBadge } from '../components/Badges'
 import { btnPrimary } from '../components/buttonStyles'
@@ -28,6 +28,19 @@ export default function Dashboard() {
 
   const orders = useCollection('orders')
   const activeCount = orders ? orders.filter((o) => o.status !== 'Completed').length : 0
+
+  // Keep the public Contact page's queue count in sync whenever this page is
+  // open and the order list changes. There's no backend to do this on every
+  // write everywhere, so the admin app publishes it as a side effect of
+  // viewing the dashboard (where Amy manages orders day to day).
+  const lastPublishedQueueCount = useRef(null)
+  useEffect(() => {
+    if (!orders) return
+    const queueCount = orders.filter((o) => QUEUE_STATUSES.includes(o.status)).length
+    if (lastPublishedQueueCount.current === queueCount) return
+    lastPublishedQueueCount.current = queueCount
+    publishQueueCount(queueCount).catch((err) => console.error(err))
+  }, [orders])
 
   async function handleCopyUpdate(order) {
     const ok = await copyToClipboard(buildUpdateMessage(order, activeCount))

@@ -1,13 +1,27 @@
 import { InstagramIcon, FacebookIcon } from '../../components/shop/SocialIcons'
 import { INSTAGRAM_HANDLE, FACEBOOK_PAGE } from '../../lib/shopUtils'
+import { useDocument } from '../../lib/useDocument'
 
 export default function Contact() {
+  const queueStats = useDocument('queueStats', 'current')
+
   return (
     <main className="mx-auto max-w-2xl px-4 pb-16 pt-8">
       <h1 className="font-comic text-4xl text-black">Contact Us</h1>
       <p className="mt-2 text-sm text-slate-600">
         Interested in a custom commission, or have a question about a piece? Reach out any time.
       </p>
+
+      {queueStats != null && (
+        <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <h2 className="font-comic text-xl text-black">Current Wait Times</h2>
+          <p className="mt-1.5 text-sm text-slate-600">
+            We currently have <span className="font-bold text-black">{queueStats.count}</span> custom order
+            {queueStats.count === 1 ? '' : 's'} in our queue. Reach out below and we'll let you know what that
+            means for your timeline!
+          </p>
+        </div>
+      )}
 
       <div className="mt-6 space-y-3">
         <a
