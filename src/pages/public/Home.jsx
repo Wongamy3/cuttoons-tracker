@@ -33,12 +33,18 @@ export default function Home() {
         </div>
       </section>
 
-      <Link
-        to="/shop/contact"
-        className="font-comic mt-10 block rounded-xl bg-comic-500 px-5 py-4 text-center text-xl tracking-wide text-white shadow-md transition duration-150 hover:bg-comic-600 active:scale-[0.98]"
-      >
-        Ready to place an order? →
-      </Link>
+      <section className="mt-10 rounded-2xl border border-comic-100 bg-comic-100/30 p-6 text-center">
+        <h2 className="font-comic text-2xl text-black">Ready to place an order?</h2>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
+          We'd love to bring your idea to life — reach out and let's get started.
+        </p>
+        <Link
+          to="/shop/contact"
+          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
+        >
+          Contact Us →
+        </Link>
+      </section>
 
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
