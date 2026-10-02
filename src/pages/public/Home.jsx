@@ -33,7 +33,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-2xl border border-comic-100 bg-comic-100/30 p-6 text-center">
+      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
         <h2 className="font-comic text-2xl text-black">Ready to place an order?</h2>
         <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
           We'd love to bring your idea to life — reach out and let's get started.
