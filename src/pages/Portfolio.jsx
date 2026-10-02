@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { addPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadPhoto } from '../db'
 import { useCollection } from '../lib/useCollection'
+import { sortedPortfolio } from '../lib/shopUtils'
 import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
 
 const editInputCls = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm'
@@ -18,6 +19,11 @@ function PortfolioThumb({ item, onPreview, onDelete }) {
       <button type="button" onClick={onPreview} className="block h-full w-full" aria-label="Preview photo">
         <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
       </button>
+      {item.displayOrder !== '' && item.displayOrder != null && (
+        <div className="pointer-events-none absolute left-1 top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-black/70 px-1.5 text-[11px] font-bold text-white">
+          #{item.displayOrder}
+        </div>
+      )}
       {subtitle && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-black/60 px-2 py-1 text-[11px] text-white">
           {subtitle}
@@ -37,20 +43,19 @@ function PortfolioThumb({ item, onPreview, onDelete }) {
 
 export default function Portfolio() {
   const rawItems = useCollection('portfolio')
-  const items = useMemo(
-    () => (rawItems ? rawItems.slice().sort((a, b) => b.createdAt - a.createdAt) : rawItems),
-    [rawItems]
-  )
+  const items = useMemo(() => sortedPortfolio(rawItems), [rawItems])
   const fileInputRef = useRef(null)
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')
   const [price, setPrice] = useState('')
+  const [displayOrder, setDisplayOrder] = useState('')
   const [uploading, setUploading] = useState(false)
 
   const [previewItem, setPreviewItem] = useState(null)
   const [editCaption, setEditCaption] = useState('')
   const [editSizeTag, setEditSizeTag] = useState('')
   const [editPrice, setEditPrice] = useState('')
+  const [editDisplayOrder, setEditDisplayOrder] = useState('')
   const [saving, setSaving] = useState(false)
 
   async function handleFiles(e) {
@@ -66,12 +71,14 @@ export default function Portfolio() {
           caption: caption.trim(),
           sizeTag: sizeTag.trim(),
           price: price.trim(),
+          displayOrder: displayOrder.trim(),
           createdAt: Date.now(),
         })
       }
       setCaption('')
       setSizeTag('')
       setPrice('')
+      setDisplayOrder('')
     } finally {
       setUploading(false)
     }
@@ -82,13 +89,19 @@ export default function Portfolio() {
     setEditCaption(item.caption || '')
     setEditSizeTag(item.sizeTag || '')
     setEditPrice(item.price || '')
+    setEditDisplayOrder(item.displayOrder || '')
   }
 
   async function handleSaveEdit() {
     if (!previewItem) return
     setSaving(true)
     try {
-      const data = { caption: editCaption.trim(), sizeTag: editSizeTag.trim(), price: editPrice.trim() }
+      const data = {
+        caption: editCaption.trim(),
+        sizeTag: editSizeTag.trim(),
+        price: editPrice.trim(),
+        displayOrder: editDisplayOrder.trim(),
+      }
       await updatePortfolioItem(previewItem.id, data)
       setPreviewItem((p) => (p ? { ...p, ...data } : p))
     } finally {
@@ -129,6 +142,14 @@ export default function Portfolio() {
             className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
         </div>
+        <input
+          type="number"
+          step="1"
+          placeholder="Display order (optional) — lower numbers show first"
+          value={displayOrder}
+          onChange={(e) => setDisplayOrder(e.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+        />
         <button
           type="button"
           disabled={uploading}
@@ -198,6 +219,14 @@ export default function Portfolio() {
                   className={editInputCls}
                 />
               </div>
+              <input
+                type="number"
+                step="1"
+                placeholder="Display order (optional) — lower numbers show first"
+                value={editDisplayOrder}
+                onChange={(e) => setEditDisplayOrder(e.target.value)}
+                className={editInputCls}
+              />
               <button
                 type="button"
                 onClick={handleSaveEdit}

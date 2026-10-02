@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useCollection } from '../../lib/useCollection'
-import { sortedByNewest } from '../../lib/shopUtils'
+import { sortedByNewest, sortedPortfolio } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
 import teamPhoto from '../../assets/team-photo.jpg'
@@ -8,7 +8,7 @@ import AnimatedSignature from '../../components/shop/AnimatedSignature'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
-  const soldItems = sortedByNewest(useCollection('portfolio'))
+  const soldItems = sortedPortfolio(useCollection('portfolio'))
   const [previewItem, setPreviewItem] = useState(null)
 
   return (
