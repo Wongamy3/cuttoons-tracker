@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { InstagramIcon, FacebookIcon } from './SocialIcons'
-import { INSTAGRAM_HANDLE, FACEBOOK_PAGE } from '../../lib/shopUtils'
+import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons'
+import { INSTAGRAM_HANDLE, FACEBOOK_PAGE, YOUTUBE_HANDLE } from '../../lib/shopUtils'
 
 const links = [
   { to: '/shop', label: 'Home' },
@@ -43,6 +43,15 @@ export default function Footer() {
           className="text-black transition hover:text-comic-500"
         >
           <FacebookIcon className="h-5 w-5" />
+        </a>
+        <a
+          href={`https://www.youtube.com/@${YOUTUBE_HANDLE}`}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="YouTube"
+          className="text-black transition hover:text-comic-500"
+        >
+          <YoutubeIcon className="h-5 w-5" />
         </a>
       </div>
 

@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../../assets/cuttoons-logo.png'
 import Footer from './Footer'
-import { InstagramIcon, FacebookIcon } from './SocialIcons'
-import { INSTAGRAM_HANDLE, FACEBOOK_PAGE } from '../../lib/shopUtils'
+import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons'
+import { INSTAGRAM_HANDLE, FACEBOOK_PAGE, YOUTUBE_HANDLE } from '../../lib/shopUtils'
 
 function MenuIcon(props) {
   return (
@@ -65,6 +65,15 @@ export default function PublicLayout() {
               className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition duration-150 active:scale-90"
             >
               <FacebookIcon className="h-4 w-4" />
+            </a>
+            <a
+              href={`https://www.youtube.com/@${YOUTUBE_HANDLE}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="YouTube"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition duration-150 active:scale-90"
+            >
+              <YoutubeIcon className="h-4 w-4" />
             </a>
           </div>
         </header>

@@ -2,6 +2,7 @@ import { PORTFOLIO_CATEGORIES } from '../db'
 
 export const INSTAGRAM_HANDLE = 'cuttoonsja'
 export const FACEBOOK_PAGE = 'cuttoons'
+export const YOUTUBE_HANDLE = 'cut-toons7607'
 
 export function itemSubtitle(item) {
   return [item.caption, item.sizeTag].filter(Boolean).join(' · ')
