@@ -33,8 +33,11 @@ export default function PaintingGrid({ items, allItems, sold, onSelect, emptyTex
           <div className="p-2">
             {itemSubtitle(item) && <p className="text-xs text-slate-500">{itemSubtitle(item)}</p>}
             {item.price && (
-              <p className="font-semibold text-comic-600">
-                {sold ? 'Sold for ' : ''}${Number(item.price).toFixed(2)}
+              <p className="mt-1">
+                {sold && <span className="text-xs font-medium text-slate-400">Sold for </span>}
+                <span className="font-comic text-xl tracking-wide text-comic-600">
+                  ${Number(item.price).toFixed(2)}
+                </span>
               </p>
             )}
           </div>
