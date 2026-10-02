@@ -108,7 +108,7 @@ export default function InquiryForm() {
         </select>
       </Field>
 
-      <Field label="Pickup Preference" required>
+      <Field label="How Would You Like to Receive Your Piece?" required>
         <select
           required
           className={inputCls}

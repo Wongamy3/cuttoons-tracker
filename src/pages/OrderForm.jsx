@@ -156,7 +156,7 @@ export default function OrderForm() {
         </select>
       </Field>
 
-      <Field label="Pickup Preference">
+      <Field label="How Would You Like to Receive Your Piece?">
         <select
           className={inputCls}
           value={form.pickupPreference}
