@@ -100,6 +100,7 @@ export const PORTFOLIO_CATEGORIES = [
   'One Piece',
   'Yu Gi Oh',
   'Pokemon',
+  'Jujutsu Kaisen',
   'Sports',
   'Cartoons',
   'Tables',
