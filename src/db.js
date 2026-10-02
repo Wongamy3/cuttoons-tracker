@@ -94,6 +94,19 @@ export const CONTACT_METHODS = [
 
 export const SIZE_OPTIONS = Array.from({ length: 8 }, (_, i) => `${i + 1}ft`)
 
+export const PORTFOLIO_CATEGORIES = [
+  'Dragon Ball Z',
+  'My Hero Academia',
+  'One Piece',
+  'Yu Gi Oh',
+  'Pokemon',
+  'Sports',
+  'Cartoons',
+  'Tables',
+  'Music',
+  'Other',
+]
+
 // 1ft = $50, 2ft = $200, then +$100 per foot beyond 2ft
 export function priceForSize(size) {
   const feet = parseInt(size, 10)

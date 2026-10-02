@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { useCollection } from '../../lib/useCollection'
-import { sortedByNewest, sortedPortfolio } from '../../lib/shopUtils'
+import { sortedByNewest, groupedPortfolio } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
+import PortfolioCategorySection from '../../components/shop/PortfolioCategorySection'
 import teamPhoto from '../../assets/team-photo.jpg'
 import AnimatedSignature from '../../components/shop/AnimatedSignature'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
-  const soldItems = sortedPortfolio(useCollection('portfolio'))
+  const soldGroups = groupedPortfolio(useCollection('portfolio'))
   const [previewItem, setPreviewItem] = useState(null)
 
   return (
@@ -43,12 +44,20 @@ export default function Home() {
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
-        <PaintingGrid
-          items={soldItems}
-          sold
-          onSelect={setPreviewItem}
-          emptyText="No past work to show yet."
-        />
+        {soldGroups === undefined && <p className="mt-3 text-sm text-slate-400">Loading...</p>}
+        {soldGroups && soldGroups.length === 0 && (
+          <div className="mt-3 rounded-xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-400">
+            No past work to show yet.
+          </div>
+        )}
+        {soldGroups?.map((group) => (
+          <PortfolioCategorySection
+            key={group.category}
+            category={group.category}
+            items={group.items}
+            onSelect={setPreviewItem}
+          />
+        ))}
       </section>
 
       <PaintingPreview item={previewItem} onClose={() => setPreviewItem(null)} />

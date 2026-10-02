@@ -1,10 +1,11 @@
 import { useMemo, useRef, useState } from 'react'
-import { addPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadPhoto } from '../db'
+import { addPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadPhoto, PORTFOLIO_CATEGORIES } from '../db'
 import { useCollection } from '../lib/useCollection'
-import { sortedPortfolio } from '../lib/shopUtils'
+import { groupedPortfolio } from '../lib/shopUtils'
 import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
 
 const editInputCls = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm'
+const DEFAULT_CATEGORY = 'Other'
 
 function itemSubtitle(item) {
   return [item.caption, item.sizeTag, item.price ? `$${Number(item.price).toFixed(2)}` : null]
@@ -43,12 +44,13 @@ function PortfolioThumb({ item, onPreview, onDelete }) {
 
 export default function Portfolio() {
   const rawItems = useCollection('portfolio')
-  const items = useMemo(() => sortedPortfolio(rawItems), [rawItems])
+  const groups = useMemo(() => groupedPortfolio(rawItems), [rawItems])
   const fileInputRef = useRef(null)
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')
   const [price, setPrice] = useState('')
   const [displayOrder, setDisplayOrder] = useState('')
+  const [category, setCategory] = useState(DEFAULT_CATEGORY)
   const [uploading, setUploading] = useState(false)
 
   const [previewItem, setPreviewItem] = useState(null)
@@ -56,6 +58,7 @@ export default function Portfolio() {
   const [editSizeTag, setEditSizeTag] = useState('')
   const [editPrice, setEditPrice] = useState('')
   const [editDisplayOrder, setEditDisplayOrder] = useState('')
+  const [editCategory, setEditCategory] = useState(DEFAULT_CATEGORY)
   const [saving, setSaving] = useState(false)
 
   async function handleFiles(e) {
@@ -72,6 +75,7 @@ export default function Portfolio() {
           sizeTag: sizeTag.trim(),
           price: price.trim(),
           displayOrder: displayOrder.trim(),
+          category,
           createdAt: Date.now(),
         })
       }
@@ -79,6 +83,7 @@ export default function Portfolio() {
       setSizeTag('')
       setPrice('')
       setDisplayOrder('')
+      setCategory(DEFAULT_CATEGORY)
     } finally {
       setUploading(false)
     }
@@ -90,6 +95,7 @@ export default function Portfolio() {
     setEditSizeTag(item.sizeTag || '')
     setEditPrice(item.price || '')
     setEditDisplayOrder(item.displayOrder || '')
+    setEditCategory(item.category || DEFAULT_CATEGORY)
   }
 
   async function handleSaveEdit() {
@@ -101,6 +107,7 @@ export default function Portfolio() {
         sizeTag: editSizeTag.trim(),
         price: editPrice.trim(),
         displayOrder: editDisplayOrder.trim(),
+        category: editCategory,
       }
       await updatePortfolioItem(previewItem.id, data)
       setPreviewItem((p) => (p ? { ...p, ...data } : p))
@@ -142,10 +149,21 @@ export default function Portfolio() {
             className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
           />
         </div>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm"
+        >
+          {PORTFOLIO_CATEGORIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           step="1"
-          placeholder="Display order (optional) — lower numbers show first"
+          placeholder="Display order (optional) — lower numbers show first within this category"
           value={displayOrder}
           onChange={(e) => setDisplayOrder(e.target.value)}
           className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
@@ -168,17 +186,22 @@ export default function Portfolio() {
         />
       </div>
 
-      {items && items.length === 0 && (
+      {groups && groups.length === 0 && (
         <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400">
           No portfolio photos yet.
         </div>
       )}
 
-      <div className="grid grid-cols-3 gap-2">
-        {items?.map((item) => (
-          <PortfolioThumb key={item.id} item={item} onPreview={() => openPreview(item)} onDelete={handleDelete} />
-        ))}
-      </div>
+      {groups?.map((group) => (
+        <div key={group.category} className="space-y-2">
+          <p className="text-sm font-semibold text-slate-700">{group.category}</p>
+          <div className="grid grid-cols-3 gap-2">
+            {group.items.map((item) => (
+              <PortfolioThumb key={item.id} item={item} onPreview={() => openPreview(item)} onDelete={handleDelete} />
+            ))}
+          </div>
+        </div>
+      ))}
 
       {previewItem && (
         <div
@@ -219,10 +242,21 @@ export default function Portfolio() {
                   className={editInputCls}
                 />
               </div>
+              <select
+                value={editCategory}
+                onChange={(e) => setEditCategory(e.target.value)}
+                className={editInputCls}
+              >
+                {PORTFOLIO_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
               <input
                 type="number"
                 step="1"
-                placeholder="Display order (optional) — lower numbers show first"
+                placeholder="Display order (optional) — lower numbers show first within this category"
                 value={editDisplayOrder}
                 onChange={(e) => setEditDisplayOrder(e.target.value)}
                 className={editInputCls}
