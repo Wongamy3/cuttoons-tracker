@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PaintingGrid from './PaintingGrid'
+import { categorySlug } from '../../lib/shopUtils'
 
 const PAGE_SIZE = 3
 
@@ -17,7 +18,7 @@ export default function PortfolioCategorySection({ category, items, onSelect }) 
   const hiddenCount = items.length - PAGE_SIZE
 
   return (
-    <div className="mt-8">
+    <div id={categorySlug(category)} className="mt-8 scroll-mt-24">
       <h3 className="font-comic text-xl text-black">{category}</h3>
       <PaintingGrid items={visibleItems} sold onSelect={onSelect} emptyText="" />
       {hiddenCount > 0 && (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCollection } from '../../lib/useCollection'
-import { sortedByNewest, groupedPortfolio } from '../../lib/shopUtils'
+import { sortedByNewest, groupedPortfolio, categorySlug } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
 import PortfolioCategorySection from '../../components/shop/PortfolioCategorySection'
@@ -12,6 +12,10 @@ export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
   const soldGroups = groupedPortfolio(useCollection('portfolio'))
   const [previewItem, setPreviewItem] = useState(null)
+
+  function scrollToCategory(category) {
+    document.getElementById(categorySlug(category))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
@@ -60,6 +64,22 @@ export default function Home() {
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
+
+        {soldGroups && soldGroups.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {soldGroups.map((group) => (
+              <button
+                key={group.category}
+                type="button"
+                onClick={() => scrollToCategory(group.category)}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-black transition duration-150 hover:border-comic-400 hover:text-comic-600 active:scale-95"
+              >
+                {group.category} <span className="text-slate-400">({group.items.length})</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {soldGroups === undefined && <p className="mt-3 text-sm text-slate-400">Loading...</p>}
         {soldGroups && soldGroups.length === 0 && (
           <div className="mt-3 rounded-xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-400">
