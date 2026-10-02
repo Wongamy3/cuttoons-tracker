@@ -14,20 +14,22 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
-      <section className="text-center">
+      <section className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-center sm:text-left">
         <img
           src={teamPhoto}
           alt="The CutToons team"
-          className="w-full rounded-lg border border-slate-200 shadow-xl"
+          className="w-full rounded-lg border border-slate-200 shadow-xl sm:w-1/2 sm:flex-shrink-0"
         />
-        <h1 className="font-comic mt-6 text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
-        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
-          CutToons creates one-of-a-kind paintings on custom-cut MDF panels — hand-painted in acrylic and
-          finished with a glossy epoxy coat. Every piece starts with your idea: a photo, a character, a
-          memory. Panels are cut to shape with a jigsaw and finished with routed edge detailing, so no two
-          pieces are ever quite the same.
-        </p>
-        <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
+        <div className="sm:w-1/2">
+          <h1 className="font-comic text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:mx-0">
+            CutToons creates one-of-a-kind paintings on custom-cut MDF panels — hand-painted in acrylic and
+            finished with a glossy epoxy coat. Every piece starts with your idea: a photo, a character, a
+            memory. Panels are cut to shape with a jigsaw and finished with routed edge detailing, so no two
+            pieces are ever quite the same.
+          </p>
+          <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
+        </div>
       </section>
 
       <section className="mt-10">
