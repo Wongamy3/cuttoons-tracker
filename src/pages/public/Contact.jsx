@@ -47,21 +47,6 @@ export default function Contact() {
         </a>
       </div>
 
-      <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-        <h2 className="font-comic text-xl text-black">Payment Methods</h2>
-        <p className="mt-1.5 text-sm text-slate-600">We accept the following for commissions and purchases:</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {['Cash', 'Cash App', 'Apple Pay', 'Square'].map((method) => (
-            <span
-              key={method}
-              className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-black"
-            >
-              {method}
-            </span>
-          ))}
-        </div>
-      </div>
-
       <div className="mt-8 border-t border-slate-200 pt-6">
         {showForm ? (
           <>
