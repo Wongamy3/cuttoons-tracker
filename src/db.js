@@ -86,7 +86,7 @@ export async function deleteForSaleItem(id) {
 export const CONTACT_METHODS = [
   'Instagram DM',
   'Facebook Message',
-  'Website Form',
+  'Website',
   'In person',
   'Text',
   'Email',

@@ -12,7 +12,7 @@ service cloud.firestore {
           'ideaDescription', 'referencePhotos', 'size', 'payments', 'totalPrice',
           'status', 'dueDate', 'notes', 'progressPhotos', 'createdAt'
         ])
-        && data.contactMethod == 'Website Form'
+        && data.contactMethod == 'Website'
         && data.status == 'New Inquiry'
         && data.payments.size() == 0
         && data.progressPhotos.size() == 0

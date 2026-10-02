@@ -33,7 +33,7 @@ export default function InquiryForm() {
       await addOrder({
         ...blankOrder(),
         customerName: name.trim(),
-        contactMethod: 'Website Form',
+        contactMethod: 'Website',
         contactInfo: contactInfo.trim(),
         ideaDescription: ideaDescription.trim(),
         referencePhotos: uploadedPhotos,
