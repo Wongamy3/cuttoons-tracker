@@ -10,7 +10,8 @@ service cloud.firestore {
       return data.keys().hasOnly([
           'customerName', 'contactMethod', 'contactInfo', 'orderPlacedDate',
           'ideaDescription', 'referencePhotos', 'size', 'payments', 'totalPrice',
-          'status', 'dueDate', 'notes', 'progressPhotos', 'createdAt'
+          'status', 'dueDate', 'notes', 'progressPhotos', 'pickupPreference',
+          'shippingZip', 'createdAt'
         ])
         && data.contactMethod == 'Website'
         && data.status == 'New Inquiry'
@@ -22,6 +23,8 @@ service cloud.firestore {
         && data.contactInfo is string && data.contactInfo.size() > 0 && data.contactInfo.size() < 300
         && data.ideaDescription is string && data.ideaDescription.size() < 3000
         && data.referencePhotos is list && data.referencePhotos.size() < 10
+        && data.pickupPreference in ['Pick Up in San Antonio', 'Ship']
+        && data.shippingZip is string && data.shippingZip.size() < 12
         && data.createdAt is number;
     }
     match /orders/{orderId} {

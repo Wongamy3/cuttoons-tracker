@@ -95,6 +95,8 @@ export const CONTACT_METHODS = [
 
 export const SIZE_OPTIONS = Array.from({ length: 8 }, (_, i) => `${i + 1}ft`)
 
+export const PICKUP_OPTIONS = ['Pick Up in San Antonio', 'Ship']
+
 export const PORTFOLIO_CATEGORIES = [
   'Dragon Ball Z',
   'My Hero Academia',
@@ -155,12 +157,19 @@ export function blankOrder() {
     dueDate: '',
     notes: '',
     progressPhotos: [],
+    pickupPreference: '',
+    shippingZip: '',
     createdAt: Date.now(),
   }
 }
 
 export function normalizeOrder(order) {
-  return order.payments ? order : { ...order, payments: [] }
+  return {
+    ...order,
+    payments: order.payments || [],
+    pickupPreference: order.pickupPreference || '',
+    shippingZip: order.shippingZip || '',
+  }
 }
 
 export function totalPaid(payments) {

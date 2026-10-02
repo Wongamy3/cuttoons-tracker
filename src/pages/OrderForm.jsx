@@ -12,6 +12,7 @@ import {
   CONTACT_METHODS,
   SIZE_OPTIONS,
   STATUS_STAGES,
+  PICKUP_OPTIONS,
   priceForSize,
 } from '../db'
 import PhotoUploader from '../components/PhotoUploader'
@@ -154,6 +155,29 @@ export default function OrderForm() {
           ))}
         </select>
       </Field>
+
+      <Field label="Pickup Preference">
+        <select
+          className={inputCls}
+          value={form.pickupPreference}
+          onChange={(e) => set('pickupPreference', e.target.value)}
+        >
+          <option value="">Not specified</option>
+          {PICKUP_OPTIONS.map((p) => (
+            <option key={p}>{p}</option>
+          ))}
+        </select>
+      </Field>
+
+      {form.pickupPreference === 'Ship' && (
+        <Field label="Zip Code">
+          <input
+            className={inputCls}
+            value={form.shippingZip}
+            onChange={(e) => set('shippingZip', e.target.value)}
+          />
+        </Field>
+      )}
 
       <PaymentsSection payments={form.payments} onChange={handlePaymentsChange} />
 

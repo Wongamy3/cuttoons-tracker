@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { addOrder, resolvePhotos, blankOrder, priceForSize, SIZE_OPTIONS } from '../../db'
+import { addOrder, resolvePhotos, blankOrder, priceForSize, SIZE_OPTIONS, PICKUP_OPTIONS } from '../../db'
 import PhotoUploader from '../PhotoUploader'
 
 const inputCls =
   'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-comic-500 focus:outline-none'
 
-function Field({ label, children }) {
+function Field({ label, required, children }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-slate-700">
+        {label}
+        {required && <span className="text-comic-500"> *</span>}
+      </span>
       {children}
     </label>
   )
@@ -20,6 +23,8 @@ export default function InquiryForm() {
   const [ideaDescription, setIdeaDescription] = useState('')
   const [referencePhotos, setReferencePhotos] = useState([])
   const [size, setSize] = useState(SIZE_OPTIONS[0])
+  const [pickupPreference, setPickupPreference] = useState('')
+  const [shippingZip, setShippingZip] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -39,6 +44,8 @@ export default function InquiryForm() {
         referencePhotos: uploadedPhotos,
         size,
         totalPrice: priceForSize(size),
+        pickupPreference,
+        shippingZip: pickupPreference === 'Ship' ? shippingZip.trim() : '',
         createdAt: Date.now(),
       })
       setSubmitted(true)
@@ -63,7 +70,7 @@ export default function InquiryForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <Field label="Your name">
+      <Field label="Your name" required>
         <input
           required
           className={inputCls}
@@ -72,7 +79,7 @@ export default function InquiryForm() {
         />
       </Field>
 
-      <Field label="Phone or email">
+      <Field label="Phone or email" required>
         <input
           required
           className={inputCls}
@@ -81,7 +88,7 @@ export default function InquiryForm() {
         />
       </Field>
 
-      <Field label="Painting idea / description">
+      <Field label="Painting idea / description" required>
         <textarea
           required
           rows={4}
@@ -100,6 +107,37 @@ export default function InquiryForm() {
           ))}
         </select>
       </Field>
+
+      <Field label="Pickup Preference" required>
+        <select
+          required
+          className={inputCls}
+          value={pickupPreference}
+          onChange={(e) => setPickupPreference(e.target.value)}
+        >
+          <option value="" disabled>
+            Select an option...
+          </option>
+          {PICKUP_OPTIONS.map((p) => (
+            <option key={p}>{p}</option>
+          ))}
+        </select>
+      </Field>
+
+      {pickupPreference === 'Ship' && (
+        <Field label="Zip Code" required>
+          <input
+            required
+            inputMode="numeric"
+            pattern="[0-9]{5}"
+            title="5-digit ZIP code"
+            maxLength={5}
+            className={inputCls}
+            value={shippingZip}
+            onChange={(e) => setShippingZip(e.target.value)}
+          />
+        </Field>
+      )}
 
       {error && <p className="text-sm font-medium text-red-600">{error}</p>}
 
