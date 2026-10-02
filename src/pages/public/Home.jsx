@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useCollection } from '../../lib/useCollection'
 import { sortedByNewest, groupedPortfolio } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
@@ -31,6 +32,13 @@ export default function Home() {
           <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
         </div>
       </section>
+
+      <Link
+        to="/shop/contact"
+        className="font-comic mt-10 block rounded-xl bg-comic-500 px-5 py-4 text-center text-xl tracking-wide text-white shadow-md transition duration-150 hover:bg-comic-600 active:scale-[0.98]"
+      >
+        Ready to place an order? →
+      </Link>
 
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
