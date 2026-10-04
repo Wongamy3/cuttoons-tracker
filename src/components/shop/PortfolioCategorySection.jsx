@@ -19,7 +19,10 @@ export default function PortfolioCategorySection({ category, items, navItems, on
 
   return (
     <div id={categorySlug(category)} className="mt-8 scroll-mt-24">
-      <h3 className="font-comic text-xl text-black">{category}</h3>
+      <div className="flex items-center gap-2">
+        <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
+        <h3 className="font-comic text-xl text-black">{category}</h3>
+      </div>
       <PaintingGrid items={visibleItems} allItems={navItems || items} sold onSelect={onSelect} emptyText="" />
       {hiddenCount > 0 && (
         <div className="mt-4 flex justify-center">
