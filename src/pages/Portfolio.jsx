@@ -130,7 +130,7 @@ export default function Portfolio() {
         homePriority: editShowOnHome ? editHomePriority.trim() : '',
       }
       await updatePortfolioItem(previewItem.id, data)
-      setPreviewItem((p) => (p ? { ...p, ...data } : p))
+      setPreviewItem(null)
     } finally {
       setSaving(false)
     }

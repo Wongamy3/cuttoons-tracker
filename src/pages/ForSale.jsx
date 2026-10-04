@@ -101,7 +101,7 @@ export default function ForSale() {
         description: editDescription.trim(),
       }
       await updateForSaleItem(previewItem.id, data)
-      setPreviewItem((p) => (p ? { ...p, ...data } : p))
+      setPreviewItem(null)
     } finally {
       setSaving(false)
     }
