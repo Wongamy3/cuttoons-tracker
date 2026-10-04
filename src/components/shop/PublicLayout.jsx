@@ -4,6 +4,7 @@ import logo from '../../assets/cuttoons-logo.png'
 import Footer from './Footer'
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons'
 import { INSTAGRAM_HANDLE, FACEBOOK_PAGE, YOUTUBE_HANDLE } from '../../lib/shopUtils'
+import { useDocumentTitle } from '../../lib/useDocumentTitle'
 
 function MenuIcon(props) {
   return (
@@ -33,6 +34,7 @@ const links = [
 ]
 
 export default function PublicLayout() {
+  useDocumentTitle('CutToons Shop')
   const [open, setOpen] = useState(false)
 
   return (

@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../assets/cuttoons-logo.png'
+import { useDocumentTitle } from '../lib/useDocumentTitle'
 
 function HomeIcon(props) {
   return (
@@ -57,6 +58,8 @@ const tabs = [
 ]
 
 export default function Layout() {
+  useDocumentTitle('CutToons Tracker')
+
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-brand-50">
       <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 backdrop-blur">
