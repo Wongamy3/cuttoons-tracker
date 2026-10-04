@@ -21,6 +21,11 @@ export default function About() {
           once this hobby became something more.
         </p>
         <p>
+          Jeremy's favorite pieces to create are anime and TV characters. He grew up watching anime, and
+          Dragon Ball Z was always his favorite — it's a big reason why so much of our work leans anime. He
+          loves how unique, diverse, and culturally rich the art style is.
+        </p>
+        <p>
           Every piece still starts with your idea — a photo, a favorite character, a memory you want to
           hold onto. We hand-draw the design, project it onto a medium-density fiberboard (MDF) panel, cut
           it to shape with a jigsaw, and add detailed edge work with a router. From there it's hand-painted
