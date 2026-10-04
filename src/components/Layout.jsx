@@ -71,10 +71,11 @@ export default function Layout() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-brand-50">
-      <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 backdrop-blur">
-        <div className="flex items-center justify-between gap-2 px-3 py-2">
-          <img src={logo} alt="CutToons Tracker" className="h-8 w-auto flex-shrink-0" />
-          <nav className="flex gap-1">
+      <header className="sticky top-0 z-10 flex items-center justify-between gap-1.5 border-b border-brand-100 bg-brand-50/95 px-2 py-2 backdrop-blur">
+        <img src={logo} alt="CutToons Tracker" className="h-7 w-auto flex-shrink-0" />
+        <div className="flex min-w-0 items-center gap-1.5">
+          {title && <p className="truncate text-sm font-bold text-slate-600">{title}</p>}
+          <nav className="flex flex-shrink-0 gap-0.5">
             {tabs.map(({ to, label, end, Icon }) => (
               <NavLink
                 key={to}
@@ -83,7 +84,7 @@ export default function Layout() {
                 aria-label={label}
                 title={label}
                 className={({ isActive }) =>
-                  'flex h-10 w-10 items-center justify-center rounded-xl transition duration-150 active:scale-95 ' +
+                  'flex h-9 w-9 items-center justify-center rounded-xl transition duration-150 active:scale-95 ' +
                   (isActive ? 'bg-brand-100 text-brand-700' : 'text-slate-400')
                 }
               >
@@ -92,7 +93,6 @@ export default function Layout() {
             ))}
           </nav>
         </div>
-        {title && <p className="px-3 pb-2 text-sm font-bold text-slate-600">{title}</p>}
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
