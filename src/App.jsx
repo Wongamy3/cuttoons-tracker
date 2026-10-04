@@ -5,6 +5,7 @@ import Login from './components/Login'
 import PublicLayout from './components/shop/PublicLayout'
 import PublicHome from './pages/public/Home'
 import PublicShop from './pages/public/Shop'
+import PublicSold from './pages/public/Sold'
 import PublicAbout from './pages/public/About'
 import PublicFAQ from './pages/public/FAQ'
 import PublicContact from './pages/public/Contact'
@@ -50,6 +51,7 @@ function App() {
       <Route path="shop" element={<PublicLayout />}>
         <Route index element={<PublicHome />} />
         <Route path="browse" element={<PublicShop />} />
+        <Route path="sold" element={<PublicSold />} />
         <Route path="about" element={<PublicAbout />} />
         <Route path="faq" element={<PublicFAQ />} />
         <Route path="contact" element={<PublicContact />} />

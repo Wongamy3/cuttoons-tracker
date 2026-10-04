@@ -1,27 +1,22 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCollection } from '../../lib/useCollection'
-import { sortedByNewest, groupedPortfolio, categorySlug } from '../../lib/shopUtils'
+import { sortedByNewest, groupedPortfolio } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
-import PortfolioCategorySection from '../../components/shop/PortfolioCategorySection'
 import teamPhoto from '../../assets/team-photo.jpg'
 import AnimatedSignature from '../../components/shop/AnimatedSignature'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
   const soldGroups = groupedPortfolio(useCollection('portfolio'))
-  const allSoldItems = soldGroups ? soldGroups.flatMap((g) => g.items) : soldGroups
+  const soldPreviewItems = soldGroups ? soldGroups.map((g) => g.items[0]) : soldGroups
   const [previewList, setPreviewList] = useState(null)
   const [previewIndex, setPreviewIndex] = useState(0)
 
   function openPreview(list, index) {
     setPreviewList(list)
     setPreviewIndex(index)
-  }
-
-  function scrollToCategory(category) {
-    document.getElementById(categorySlug(category))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
@@ -57,7 +52,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
         <PaintingGrid
@@ -74,43 +69,26 @@ export default function Home() {
         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-300" />
       </div>
 
-      <section>
+      <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
-
+        <PaintingGrid
+          items={soldPreviewItems}
+          sold
+          showCategory
+          onSelect={openPreview}
+          emptyText="No past work to show yet."
+        />
         {soldGroups && soldGroups.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {soldGroups.map((group) => (
-              <button
-                key={group.category}
-                type="button"
-                onClick={() => scrollToCategory(group.category)}
-                className="group inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-sm ring-1 ring-slate-200 transition duration-150 hover:-translate-y-0.5 hover:shadow-md hover:ring-comic-300 active:scale-95 active:translate-y-0"
-              >
-                {group.category}
-                <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-xs font-bold text-slate-500 transition duration-150 group-hover:bg-comic-100 group-hover:text-comic-600">
-                  {group.items.length}
-                </span>
-              </button>
-            ))}
+          <div className="mt-5 flex justify-center">
+            <Link
+              to="/shop/sold"
+              className="font-comic inline-flex items-center gap-1.5 rounded-full border-2 border-comic-500 bg-white px-5 py-2 text-base tracking-wide text-comic-600 shadow-sm transition duration-150 hover:bg-comic-100 active:scale-95"
+            >
+              See All →
+            </Link>
           </div>
         )}
-
-        {soldGroups === undefined && <p className="mt-3 text-sm text-slate-400">Loading...</p>}
-        {soldGroups && soldGroups.length === 0 && (
-          <div className="mt-3 rounded-xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-400">
-            No past work to show yet.
-          </div>
-        )}
-        {soldGroups?.map((group) => (
-          <PortfolioCategorySection
-            key={group.category}
-            category={group.category}
-            items={group.items}
-            navItems={allSoldItems}
-            onSelect={openPreview}
-          />
-        ))}
       </section>
 
       <PaintingPreview

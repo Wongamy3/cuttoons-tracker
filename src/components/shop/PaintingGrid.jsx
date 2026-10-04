@@ -1,6 +1,6 @@
 import { itemSubtitle } from '../../lib/shopUtils'
 
-export default function PaintingGrid({ items, allItems, sold, onSelect, emptyText }) {
+export default function PaintingGrid({ items, allItems, sold, showCategory, onSelect, emptyText }) {
   if (items === undefined) return <p className="mt-3 text-sm text-slate-400">Loading...</p>
 
   if (items.length === 0) {
@@ -20,7 +20,7 @@ export default function PaintingGrid({ items, allItems, sold, onSelect, emptyTex
           key={item.id}
           type="button"
           onClick={() => onSelect(navList, navList.findIndex((i) => i.id === item.id))}
-          className="overflow-hidden rounded-xl border border-slate-200 bg-white text-left transition duration-150 hover:shadow-md active:scale-95"
+          className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 active:translate-y-0"
         >
           <div className="relative aspect-square overflow-hidden bg-slate-100">
             <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
@@ -31,6 +31,9 @@ export default function PaintingGrid({ items, allItems, sold, onSelect, emptyTex
             )}
           </div>
           <div className="p-2">
+            {showCategory && item.category && (
+              <p className="text-[10px] font-bold uppercase tracking-wide text-comic-600">{item.category}</p>
+            )}
             {itemSubtitle(item) && <p className="text-xs text-slate-500">{itemSubtitle(item)}</p>}
             {item.price && (
               <p className="mt-1">

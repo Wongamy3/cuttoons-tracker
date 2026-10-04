@@ -28,6 +28,7 @@ function CloseIcon(props) {
 const links = [
   { to: '/shop', label: 'Home', end: true },
   { to: '/shop/browse', label: 'Shop' },
+  { to: '/shop/sold', label: 'Sold' },
   { to: '/shop/about', label: 'About' },
   { to: '/shop/faq', label: 'FAQs' },
   { to: '/shop/contact', label: 'Contact Us' },

@@ -5,6 +5,7 @@ import { INSTAGRAM_HANDLE, FACEBOOK_PAGE, YOUTUBE_HANDLE } from '../../lib/shopU
 const links = [
   { to: '/shop', label: 'Home' },
   { to: '/shop/browse', label: 'Shop' },
+  { to: '/shop/sold', label: 'Sold' },
   { to: '/shop/about', label: 'About' },
   { to: '/shop/faq', label: 'FAQs' },
   { to: '/shop/contact', label: 'Contact Us' },
