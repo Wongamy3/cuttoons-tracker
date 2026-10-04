@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useCollection } from '../../lib/useCollection'
 import { sortedByNewest } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
@@ -22,6 +23,20 @@ export default function Shop() {
         }}
         emptyText="Nothing available right now — check back soon!"
       />
+
+      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
+        <h2 className="font-comic text-2xl text-black">Want a Custom Piece?</h2>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
+          We'd love to bring your idea to life — reach out and let's get started.
+        </p>
+        <Link
+          to="/shop/contact"
+          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
+        >
+          Contact Us →
+        </Link>
+      </section>
+
       <PaintingPreview
         items={previewList}
         index={previewIndex}
