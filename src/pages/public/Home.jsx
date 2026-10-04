@@ -33,11 +33,17 @@ export default function Home() {
         <div className="sm:w-1/2">
           <h1 className="font-comic text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:mx-0">
-            CutToons creates one-of-a-kind paintings on custom-cut MDF panels — hand-painted in acrylic and
-            finished with a glossy epoxy coat. Every piece starts with your idea: a photo, a character, a
-            memory. Panels are cut to shape with a jigsaw and finished with routed edge detailing, so no two
-            pieces are ever quite the same.
+            We're Jeremy and Amy — two San Antonio locals who turned a Covid-era hobby into CutToons. Every
+            piece starts with your idea: a photo, a character, a memory — hand-painted in acrylic on a
+            custom-cut MDF panel and finished with a glossy epoxy coat. No two pieces are ever quite the
+            same, and we still get excited about every one.
           </p>
+          <Link
+            to="/about"
+            className="mx-auto mt-2 inline-block text-sm font-semibold text-comic-600 underline underline-offset-2 sm:mx-0"
+          >
+            Read more about us →
+          </Link>
           <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
         </div>
       </section>
