@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { YOUTUBE_HANDLE } from '../../lib/shopUtils'
 
 export default function About() {
   return (
@@ -32,9 +33,25 @@ export default function About() {
           in acrylic and finished with a glossy, durable coat of epoxy — so every commission really is one
           of a kind.
         </p>
+        <p>
+          We both still have our regular jobs, but CutToons is something we get to do together, just for
+          the love of it. Jeremy especially loves bringing people's ideas to life — creating pieces that
+          are meaningful, have a story behind them, and getting to share his artwork with others.
+        </p>
         <div>
-          <h2 className="font-comic text-xl text-black">Watch a Timelapse</h2>
-          <p className="mt-1">A peek at how one of our pieces comes together, start to finish.</p>
+          <h2 className="font-comic text-xl text-black">See Us in Action</h2>
+          <p className="mt-1">
+            A peek at how one of our pieces comes together, start to finish. For more,{' '}
+            <a
+              href={`https://www.youtube.com/@${YOUTUBE_HANDLE}`}
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-comic-600 underline underline-offset-2"
+            >
+              visit our YouTube channel
+            </a>
+            .
+          </p>
           <div className="mt-3 aspect-video overflow-hidden rounded-xl border border-slate-200 shadow-sm">
             <iframe
               className="h-full w-full"
@@ -45,11 +62,6 @@ export default function About() {
             />
           </div>
         </div>
-        <p>
-          We both still have our regular jobs, but CutToons is something we get to do together, just for
-          the love of it. Jeremy especially loves bringing people's ideas to life — creating pieces that
-          are meaningful, have a story behind them, and getting to share his artwork with others.
-        </p>
         <p>
           Interested in a custom commission?{' '}
           <Link to="/contact" className="font-semibold text-comic-600 underline underline-offset-2">
