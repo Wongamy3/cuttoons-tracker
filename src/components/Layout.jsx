@@ -62,8 +62,8 @@ export default function Layout() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-brand-50">
-      <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 backdrop-blur">
-        <img src={logo} alt="CutToons Tracker" className="block w-full h-auto" />
+      <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 py-2 backdrop-blur">
+        <img src={logo} alt="CutToons Tracker" className="mx-auto block h-10 w-auto" />
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 pb-24 pt-4">
