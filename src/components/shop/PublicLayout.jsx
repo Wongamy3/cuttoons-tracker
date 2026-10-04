@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import logo from '../../assets/cuttoons-logo.png'
 import Footer from './Footer'
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons'
@@ -50,7 +50,9 @@ export default function PublicLayout() {
           >
             {open ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
           </button>
-          <img src={logo} alt="CutToons" className="h-10 w-auto justify-self-center" />
+          <Link to="/" className="justify-self-center">
+            <img src={logo} alt="CutToons" className="h-10 w-auto" />
+          </Link>
           <div className="flex items-center justify-self-end gap-2">
             <a
               href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
