@@ -25,6 +25,14 @@ function PortfolioThumb({ item, onPreview, onDelete }) {
           #{item.displayOrder}
         </div>
       )}
+      {item.showOnHome && (
+        <div
+          className="pointer-events-none absolute right-1 top-8 rounded-full bg-comic-500 px-1.5 py-0.5 text-[10px] font-bold text-white shadow"
+          title="Shown on Home Page"
+        >
+          HOME
+        </div>
+      )}
       {subtitle && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-black/60 px-2 py-1 text-[11px] text-white">
           {subtitle}
@@ -51,6 +59,8 @@ export default function Portfolio() {
   const [price, setPrice] = useState('')
   const [displayOrder, setDisplayOrder] = useState('')
   const [category, setCategory] = useState(DEFAULT_CATEGORY)
+  const [showOnHome, setShowOnHome] = useState(false)
+  const [homePriority, setHomePriority] = useState('')
   const [uploading, setUploading] = useState(false)
 
   const [previewItem, setPreviewItem] = useState(null)
@@ -59,6 +69,8 @@ export default function Portfolio() {
   const [editPrice, setEditPrice] = useState('')
   const [editDisplayOrder, setEditDisplayOrder] = useState('')
   const [editCategory, setEditCategory] = useState(DEFAULT_CATEGORY)
+  const [editShowOnHome, setEditShowOnHome] = useState(false)
+  const [editHomePriority, setEditHomePriority] = useState('')
   const [saving, setSaving] = useState(false)
 
   async function handleFiles(e) {
@@ -76,6 +88,8 @@ export default function Portfolio() {
           price: price.trim(),
           displayOrder: displayOrder.trim(),
           category,
+          showOnHome,
+          homePriority: showOnHome ? homePriority.trim() : '',
           createdAt: Date.now(),
         })
       }
@@ -84,6 +98,8 @@ export default function Portfolio() {
       setPrice('')
       setDisplayOrder('')
       setCategory(DEFAULT_CATEGORY)
+      setShowOnHome(false)
+      setHomePriority('')
     } finally {
       setUploading(false)
     }
@@ -96,6 +112,8 @@ export default function Portfolio() {
     setEditPrice(item.price || '')
     setEditDisplayOrder(item.displayOrder || '')
     setEditCategory(item.category || DEFAULT_CATEGORY)
+    setEditShowOnHome(!!item.showOnHome)
+    setEditHomePriority(item.homePriority || '')
   }
 
   async function handleSaveEdit() {
@@ -108,6 +126,8 @@ export default function Portfolio() {
         price: editPrice.trim(),
         displayOrder: editDisplayOrder.trim(),
         category: editCategory,
+        showOnHome: editShowOnHome,
+        homePriority: editShowOnHome ? editHomePriority.trim() : '',
       }
       await updatePortfolioItem(previewItem.id, data)
       setPreviewItem((p) => (p ? { ...p, ...data } : p))
@@ -168,6 +188,25 @@ export default function Portfolio() {
           onChange={(e) => setDisplayOrder(e.target.value)}
           className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
         />
+        <label className="flex items-center gap-2 text-sm text-slate-700">
+          <input
+            type="checkbox"
+            checked={showOnHome}
+            onChange={(e) => setShowOnHome(e.target.checked)}
+            className="h-4 w-4 rounded border-slate-300"
+          />
+          Show on Home Page
+        </label>
+        {showOnHome && (
+          <input
+            type="number"
+            step="1"
+            placeholder="Priority (optional) — lower numbers show first on Home"
+            value={homePriority}
+            onChange={(e) => setHomePriority(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+          />
+        )}
         <button
           type="button"
           disabled={uploading}
@@ -261,6 +300,25 @@ export default function Portfolio() {
                 onChange={(e) => setEditDisplayOrder(e.target.value)}
                 className={editInputCls}
               />
+              <label className="flex items-center gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={editShowOnHome}
+                  onChange={(e) => setEditShowOnHome(e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                Show on Home Page
+              </label>
+              {editShowOnHome && (
+                <input
+                  type="number"
+                  step="1"
+                  placeholder="Priority (optional) — lower numbers show first on Home"
+                  value={editHomePriority}
+                  onChange={(e) => setEditHomePriority(e.target.value)}
+                  className={editInputCls}
+                />
+              )}
               <button
                 type="button"
                 onClick={handleSaveEdit}

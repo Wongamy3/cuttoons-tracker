@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCollection } from '../../lib/useCollection'
-import { sortedByNewest, groupedPortfolio } from '../../lib/shopUtils'
+import { sortedByNewest, homePageItems } from '../../lib/shopUtils'
 import PaintingGrid from '../../components/shop/PaintingGrid'
 import PaintingPreview from '../../components/shop/PaintingPreview'
 import teamPhoto from '../../assets/team-photo.jpg'
@@ -9,8 +9,9 @@ import AnimatedSignature from '../../components/shop/AnimatedSignature'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
-  const soldGroups = groupedPortfolio(useCollection('portfolio'))
-  const soldPreviewItems = soldGroups ? soldGroups.map((g) => g.items[0]) : soldGroups
+  const rawPortfolio = useCollection('portfolio')
+  const soldPreviewItems = homePageItems(rawPortfolio)
+  const hasSoldItems = !!rawPortfolio && rawPortfolio.length > 0
   const [previewList, setPreviewList] = useState(null)
   const [previewIndex, setPreviewIndex] = useState(0)
 
@@ -72,14 +73,18 @@ export default function Home() {
       <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
-        <PaintingGrid
-          items={soldPreviewItems}
-          sold
-          showCategory
-          onSelect={openPreview}
-          emptyText="No past work to show yet."
-        />
-        {soldGroups && soldGroups.length > 0 && (
+
+        {rawPortfolio === undefined && <p className="mt-3 text-sm text-slate-400">Loading...</p>}
+        {rawPortfolio && rawPortfolio.length === 0 && (
+          <div className="mt-3 rounded-xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-400">
+            No past work to show yet.
+          </div>
+        )}
+        {soldPreviewItems && soldPreviewItems.length > 0 && (
+          <PaintingGrid items={soldPreviewItems} sold showCategory onSelect={openPreview} emptyText="" />
+        )}
+
+        {hasSoldItems && (
           <div className="mt-5 flex justify-center">
             <Link
               to="/shop/sold"

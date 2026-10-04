@@ -17,17 +17,31 @@ export function sortedByNewest(items) {
   return items ? items.slice().sort((a, b) => b.createdAt - a.createdAt) : items
 }
 
-// Items with a displayOrder show first (lowest number first); everything
+// Items with a value in `field` show first (lowest number first); everything
 // else falls back to newest-first, same as sortedByNewest.
-function sortByDisplayOrder(items) {
+function sortByPriorityField(items, field) {
   return items.slice().sort((a, b) => {
-    const aOrder = a.displayOrder !== '' && a.displayOrder != null ? Number(a.displayOrder) : null
-    const bOrder = b.displayOrder !== '' && b.displayOrder != null ? Number(b.displayOrder) : null
+    const aOrder = a[field] !== '' && a[field] != null ? Number(a[field]) : null
+    const bOrder = b[field] !== '' && b[field] != null ? Number(b[field]) : null
     if (aOrder !== null && bOrder !== null) return aOrder - bOrder
     if (aOrder !== null) return -1
     if (bOrder !== null) return 1
     return b.createdAt - a.createdAt
   })
+}
+
+function sortByDisplayOrder(items) {
+  return sortByPriorityField(items, 'displayOrder')
+}
+
+// Portfolio items explicitly checked "Show on Home Page", ordered by their
+// optional homePriority number (lower first), falling back to newest-first.
+export function homePageItems(items) {
+  if (!items) return items
+  return sortByPriorityField(
+    items.filter((i) => i.showOnHome),
+    'homePriority'
+  )
 }
 
 // Buckets portfolio items by category (unrecognized/missing category falls
