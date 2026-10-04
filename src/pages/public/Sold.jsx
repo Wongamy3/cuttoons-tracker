@@ -61,6 +61,7 @@ export default function Sold() {
       <PaintingPreview
         items={previewList}
         index={previewIndex}
+        sold={true}
         onNavigate={setPreviewIndex}
         onClose={() => setPreviewList(null)}
       />

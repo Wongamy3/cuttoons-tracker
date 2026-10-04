@@ -19,7 +19,7 @@ export default function PaintingGrid({ items, allItems, sold, showCategory, onSe
         <button
           key={item.id}
           type="button"
-          onClick={() => onSelect(navList, navList.findIndex((i) => i.id === item.id))}
+          onClick={() => onSelect(navList, navList.findIndex((i) => i.id === item.id), sold)}
           className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 active:translate-y-0"
         >
           <div className="relative aspect-square overflow-hidden bg-slate-100">

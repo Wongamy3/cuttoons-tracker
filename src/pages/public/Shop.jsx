@@ -40,6 +40,7 @@ export default function Shop() {
       <PaintingPreview
         items={previewList}
         index={previewIndex}
+        sold={false}
         onNavigate={setPreviewIndex}
         onClose={() => setPreviewList(null)}
       />

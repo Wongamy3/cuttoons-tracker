@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { itemSubtitle } from '../../lib/shopUtils'
 
 function CloseIcon(props) {
@@ -26,7 +27,7 @@ function ChevronRightIcon(props) {
   )
 }
 
-export default function PaintingPreview({ items, index, onNavigate, onClose }) {
+export default function PaintingPreview({ items, index, sold, onNavigate, onClose }) {
   const item = items?.[index]
   const hasMultiple = !!items && items.length > 1
 
@@ -94,6 +95,18 @@ export default function PaintingPreview({ items, index, onNavigate, onClose }) {
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">{item.description}</p>
           )}
           {item.price && <p className="mt-2 text-xl font-bold text-comic-600">${Number(item.price).toFixed(2)}</p>}
+          {!sold && (
+            <p className="mt-3 text-sm text-slate-600">
+              Interested in this piece?{' '}
+              <Link
+                to="/shop/contact"
+                onClick={onClose}
+                className="font-semibold text-comic-600 underline underline-offset-2"
+              >
+                Contact us to purchase
+              </Link>
+            </p>
+          )}
         </div>
       </div>
 

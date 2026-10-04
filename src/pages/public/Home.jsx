@@ -14,10 +14,12 @@ export default function Home() {
   const hasSoldItems = !!rawPortfolio && rawPortfolio.length > 0
   const [previewList, setPreviewList] = useState(null)
   const [previewIndex, setPreviewIndex] = useState(0)
+  const [previewSold, setPreviewSold] = useState(false)
 
-  function openPreview(list, index) {
+  function openPreview(list, index, sold) {
     setPreviewList(list)
     setPreviewIndex(index)
+    setPreviewSold(sold)
   }
 
   return (
@@ -99,6 +101,7 @@ export default function Home() {
       <PaintingPreview
         items={previewList}
         index={previewIndex}
+        sold={previewSold}
         onNavigate={setPreviewIndex}
         onClose={() => setPreviewList(null)}
       />
