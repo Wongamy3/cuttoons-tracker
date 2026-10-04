@@ -1,4 +1,13 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+
+function ChevronIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  )
+}
 
 const PAYMENT_METHODS = ['Cash', 'Cash App', 'Apple Pay']
 
@@ -120,18 +129,71 @@ const faqs = [
 ]
 
 export default function FAQ() {
+  const [openIndexes, setOpenIndexes] = useState(() => new Set())
+  const itemRefs = useRef([])
+
+  function toggle(i) {
+    setOpenIndexes((cur) => {
+      const next = new Set(cur)
+      if (next.has(i)) next.delete(i)
+      else next.add(i)
+      return next
+    })
+  }
+
+  function jumpTo(i) {
+    setOpenIndexes((cur) => new Set(cur).add(i))
+    requestAnimationFrame(() => {
+      itemRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+
   return (
     <main className="mx-auto max-w-2xl px-4 pb-16 pt-8">
       <h1 className="font-comic text-4xl text-black">FAQs</h1>
       <p className="mt-2 text-sm text-slate-600">Answers to the questions we hear most often.</p>
 
-      <div className="mt-6 space-y-6">
-        {faqs.map((faq) => (
-          <div key={faq.question} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <h2 className="font-comic text-xl text-black">{faq.question}</h2>
-            <div className="mt-1.5 text-sm leading-relaxed text-slate-600">{faq.answer}</div>
-          </div>
-        ))}
+      <nav className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <p className="font-comic text-sm tracking-wide text-slate-500">Jump to a question</p>
+        <ul className="mt-2 space-y-1.5">
+          {faqs.map((faq, i) => (
+            <li key={faq.question}>
+              <button
+                type="button"
+                onClick={() => jumpTo(i)}
+                className="text-left text-sm font-medium text-comic-600 underline underline-offset-2"
+              >
+                {faq.question}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className="mt-6 space-y-3">
+        {faqs.map((faq, i) => {
+          const isOpen = openIndexes.has(i)
+          return (
+            <div
+              key={faq.question}
+              ref={(el) => (itemRefs.current[i] = el)}
+              className="scroll-mt-24 rounded-xl border border-slate-200 bg-slate-50 p-4"
+            >
+              <button
+                type="button"
+                onClick={() => toggle(i)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center justify-between gap-3 text-left"
+              >
+                <h2 className="font-comic text-xl text-black">{faq.question}</h2>
+                <ChevronIcon
+                  className={'h-5 w-5 flex-shrink-0 text-slate-400 transition duration-150 ' + (isOpen ? 'rotate-180' : '')}
+                />
+              </button>
+              {isOpen && <div className="mt-1.5 text-sm leading-relaxed text-slate-600">{faq.answer}</div>}
+            </div>
+          )
+        })}
       </div>
     </main>
   )
