@@ -50,7 +50,7 @@ export default function Settings() {
           your previously sold work. Good for sharing on Instagram or sending to a customer.
         </p>
         <a
-          href="#/shop"
+          href="#/"
           target="_blank"
           rel="noopener noreferrer"
           className={'flex w-full items-center justify-center gap-1.5 ' + btnSecondary}

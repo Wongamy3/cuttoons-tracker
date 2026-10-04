@@ -56,7 +56,7 @@ const faqs = [
     answer: (
       <p>
         Turnaround depends on how many orders are ahead of yours — you can check our current queue on the{' '}
-        <Link to="/shop/contact" className="font-semibold text-comic-600 underline underline-offset-2">
+        <Link to="/contact" className="font-semibold text-comic-600 underline underline-offset-2">
           Contact Us
         </Link>{' '}
         page. Feel free to send us a message for a more specific estimate.

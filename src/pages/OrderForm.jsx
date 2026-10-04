@@ -79,7 +79,7 @@ export default function OrderForm() {
       } else {
         await updateOrder(orderId, data)
       }
-      navigate('/')
+      navigate('/admin')
     } finally {
       setSubmitting(false)
     }
@@ -88,7 +88,7 @@ export default function OrderForm() {
   async function handleDelete() {
     if (!confirm('Delete this order? This cannot be undone.')) return
     await deleteOrder(orderId)
-    navigate('/')
+    navigate('/admin')
   }
 
   if (loading) return <p className="text-sm text-slate-400">Loading...</p>

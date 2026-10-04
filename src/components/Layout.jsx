@@ -50,16 +50,16 @@ function TaxesIcon(props) {
 }
 
 const tabs = [
-  { to: '/', label: 'Home', end: true, Icon: HomeIcon },
-  { to: '/portfolio', label: 'Portfolio', Icon: PortfolioIcon },
-  { to: '/for-sale', label: 'For Sale', Icon: TagIcon },
-  { to: '/taxes', label: 'Taxes', Icon: TaxesIcon },
-  { to: '/settings', label: 'Settings', Icon: SettingsIcon },
+  { to: '/admin', label: 'Home', end: true, Icon: HomeIcon },
+  { to: '/admin/portfolio', label: 'Portfolio', Icon: PortfolioIcon },
+  { to: '/admin/for-sale', label: 'For Sale', Icon: TagIcon },
+  { to: '/admin/taxes', label: 'Taxes', Icon: TaxesIcon },
+  { to: '/admin/settings', label: 'Settings', Icon: SettingsIcon },
 ]
 
 function pageTitle(pathname) {
-  if (pathname.startsWith('/orders/')) return pathname.endsWith('/new') ? 'New Order' : 'Edit Order'
-  if (pathname.startsWith('/taxes/')) return pathname.endsWith('/new') ? 'New Expense' : 'Edit Expense'
+  if (pathname.startsWith('/admin/orders/')) return pathname.endsWith('/new') ? 'New Order' : 'Edit Order'
+  if (pathname.startsWith('/admin/taxes/')) return pathname.endsWith('/new') ? 'New Expense' : 'Edit Expense'
   const tab = tabs.find((t) => (t.end ? pathname === t.to : pathname.startsWith(t.to)))
   return tab?.label || ''
 }

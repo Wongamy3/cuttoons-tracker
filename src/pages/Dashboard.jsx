@@ -76,7 +76,7 @@ export default function Dashboard() {
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-400 focus:outline-none"
         />
-        <Link to="/orders/new" className={'whitespace-nowrap ' + btnPrimary}>
+        <Link to="/admin/orders/new" className={'whitespace-nowrap ' + btnPrimary}>
           + New Order
         </Link>
       </div>
@@ -126,7 +126,7 @@ export default function Dashboard() {
 
           return (
             <li key={order.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-              <Link to={`/orders/${order.id}`} className="block p-3 transition duration-150 hover:bg-slate-50">
+              <Link to={`/admin/orders/${order.id}`} className="block p-3 transition duration-150 hover:bg-slate-50">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-black">{order.customerName || 'Unnamed customer'}</p>

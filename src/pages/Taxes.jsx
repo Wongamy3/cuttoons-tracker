@@ -204,7 +204,7 @@ export default function Taxes() {
         </button>
       </div>
 
-      <Link to="/taxes/new" className={'block text-center ' + btnPrimary}>
+      <Link to="/admin/taxes/new" className={'block text-center ' + btnPrimary}>
         + Add Expense
       </Link>
 
@@ -255,7 +255,7 @@ export default function Taxes() {
         {yearExpenses.map((e) => (
           <li key={e.id}>
             <Link
-              to={`/taxes/${e.id}`}
+              to={`/admin/taxes/${e.id}`}
               className="block rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition duration-150 hover:bg-slate-50"
             >
               <div className="flex items-start justify-between gap-2">

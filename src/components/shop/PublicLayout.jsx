@@ -26,12 +26,12 @@ function CloseIcon(props) {
 }
 
 const links = [
-  { to: '/shop', label: 'Home', end: true },
-  { to: '/shop/browse', label: 'Shop' },
-  { to: '/shop/sold', label: 'Sold' },
-  { to: '/shop/about', label: 'About' },
-  { to: '/shop/faq', label: 'FAQs' },
-  { to: '/shop/contact', label: 'Contact Us' },
+  { to: '/', label: 'Home', end: true },
+  { to: '/browse', label: 'Shop' },
+  { to: '/sold', label: 'Sold' },
+  { to: '/about', label: 'About' },
+  { to: '/faq', label: 'FAQs' },
+  { to: '/contact', label: 'Contact Us' },
 ]
 
 export default function PublicLayout() {

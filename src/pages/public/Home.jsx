@@ -59,7 +59,7 @@ export default function Home() {
           We'd love to bring your idea to life — reach out and let's get started.
         </p>
         <Link
-          to="/shop/contact"
+          to="/contact"
           className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
         >
           Contact Us →
@@ -89,7 +89,7 @@ export default function Home() {
         {hasSoldItems && (
           <div className="mt-5 flex justify-center">
             <Link
-              to="/shop/sold"
+              to="/sold"
               className="font-comic inline-flex items-center gap-1.5 rounded-full border-2 border-comic-500 bg-white px-5 py-2 text-base tracking-wide text-comic-600 shadow-sm transition duration-150 hover:bg-comic-100 active:scale-95"
             >
               See All →

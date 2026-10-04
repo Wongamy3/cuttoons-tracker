@@ -49,7 +49,7 @@ export default function ExpenseForm() {
       } else {
         await updateExpense(expenseId, data)
       }
-      navigate('/taxes')
+      navigate('/admin/taxes')
     } finally {
       setSubmitting(false)
     }
@@ -58,7 +58,7 @@ export default function ExpenseForm() {
   async function handleDelete() {
     if (!confirm('Delete this expense? This cannot be undone.')) return
     await deleteExpense(expenseId)
-    navigate('/taxes')
+    navigate('/admin/taxes')
   }
 
   if (loading) return <p className="text-sm text-slate-400">Loading...</p>

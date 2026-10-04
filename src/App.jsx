@@ -48,7 +48,7 @@ function RequireAuth({ children }) {
 function App() {
   return (
     <Routes>
-      <Route path="shop" element={<PublicLayout />}>
+      <Route element={<PublicLayout />}>
         <Route index element={<PublicHome />} />
         <Route path="browse" element={<PublicShop />} />
         <Route path="sold" element={<PublicSold />} />
@@ -57,6 +57,7 @@ function App() {
         <Route path="contact" element={<PublicContact />} />
       </Route>
       <Route
+        path="admin"
         element={
           <RequireAuth>
             <Layout />

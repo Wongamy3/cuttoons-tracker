@@ -99,7 +99,7 @@ export default function PaintingPreview({ items, index, sold, onNavigate, onClos
             <p className="mt-3 text-sm text-slate-600">
               Interested in this piece?{' '}
               <Link
-                to="/shop/contact"
+                to="/contact"
                 onClick={onClose}
                 className="font-semibold text-comic-600 underline underline-offset-2"
               >

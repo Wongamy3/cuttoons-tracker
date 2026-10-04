@@ -30,7 +30,7 @@ export default function Shop() {
           We'd love to bring your idea to life — reach out and let's get started.
         </p>
         <Link
-          to="/shop/contact"
+          to="/contact"
           className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
         >
           Contact Us →
