@@ -62,32 +62,30 @@ export default function Layout() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-brand-50">
-      <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 py-2 backdrop-blur">
-        <img src={logo} alt="CutToons Tracker" className="mx-auto block h-10 w-auto" />
-      </header>
-
-      <main className="flex-1 overflow-y-auto px-4 pb-24 pt-4">
-        <Outlet />
-      </main>
-
-      <nav className="fixed bottom-0 left-1/2 z-10 w-full max-w-lg -translate-x-1/2 rounded-t-3xl bg-white shadow-[0_-4px_24px_rgba(15,23,42,0.10)]">
-        <div className="flex px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+      <header className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-brand-100 bg-brand-50/95 px-3 py-2 backdrop-blur">
+        <img src={logo} alt="CutToons Tracker" className="h-8 w-auto flex-shrink-0" />
+        <nav className="flex gap-1">
           {tabs.map(({ to, label, end, Icon }) => (
             <NavLink
               key={to}
               to={to}
               end={end}
+              aria-label={label}
+              title={label}
               className={({ isActive }) =>
-                'mx-1 flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-2 text-[11px] font-bold transition duration-150 active:scale-95 ' +
+                'flex h-10 w-10 items-center justify-center rounded-xl transition duration-150 active:scale-95 ' +
                 (isActive ? 'bg-brand-100 text-brand-700' : 'text-slate-400')
               }
             >
-              <Icon className="h-6 w-6" />
-              {label}
+              <Icon className="h-5 w-5" />
             </NavLink>
           ))}
-        </div>
-      </nav>
+        </nav>
+      </header>
+
+      <main className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
+        <Outlet />
+      </main>
     </div>
   )
 }
