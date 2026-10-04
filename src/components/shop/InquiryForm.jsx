@@ -100,12 +100,15 @@ export default function InquiryForm() {
 
       <PhotoUploader label="Reference photos (optional)" photos={referencePhotos} onChange={setReferencePhotos} />
 
-      <Field label="Size">
+      <Field label="Approximate Size">
         <select className={inputCls} value={size} onChange={(e) => setSize(e.target.value)}>
           {SIZE_OPTIONS.map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>
+        <span className="mt-1 block text-xs text-slate-500">
+          Actual dimensions will depend on the painting's proportions.
+        </span>
       </Field>
 
       <Field label="How Would You Like to Receive Your Piece?" required>
