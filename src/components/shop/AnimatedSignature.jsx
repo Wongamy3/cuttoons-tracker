@@ -8,7 +8,7 @@ const SIGNATURE_PATH =
 // Small negative-space triangle where the two strokes of the "A" meet at
 // its peak, present in the original photo but lost when the bitmap was
 // traced to vector — added back by hand as a white cutout on top of the fill.
-const A_GAP_PATH = 'M 227 83 L 237 83 L 231 99 Z'
+const A_GAP_PATH = 'M 224 84 L 239 84 L 231 106 Z'
 
 export default function AnimatedSignature({ className }) {
   const strokeRef = useRef(null)
