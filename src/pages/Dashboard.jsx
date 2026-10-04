@@ -100,7 +100,7 @@ export default function Dashboard() {
           onClick={handleToggleCommissions}
           className={
             'relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition duration-150 ' +
-            (acceptingCommissions ? 'bg-comic-500' : 'bg-slate-300')
+            (acceptingCommissions ? 'bg-emerald-500' : 'bg-slate-300')
           }
         >
           <span
