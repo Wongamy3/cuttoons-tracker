@@ -53,7 +53,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+      <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
         <PaintingGrid
@@ -70,7 +70,7 @@ export default function Home() {
         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-300" />
       </div>
 
-      <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+      <section>
         <h2 className="font-comic text-2xl text-black">Sold</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
 
