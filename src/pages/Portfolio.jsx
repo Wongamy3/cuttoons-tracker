@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { addPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadPhoto, PORTFOLIO_CATEGORIES } from '../db'
 import { useCollection } from '../lib/useCollection'
 import { groupedPortfolio } from '../lib/shopUtils'
@@ -62,6 +62,17 @@ export default function Portfolio() {
   const rawItems = useCollection('portfolio')
   const groups = useMemo(() => groupedPortfolio(rawItems), [rawItems])
   const [collapsed, setCollapsed] = useState(() => new Set())
+  const collapseInitialized = useRef(false)
+
+  // Start every category collapsed the first time the data loads, without
+  // re-collapsing sections the user has already expanded on later updates
+  // (e.g. after adding/editing a photo triggers a fresh Firestore snapshot).
+  useEffect(() => {
+    if (groups && !collapseInitialized.current) {
+      collapseInitialized.current = true
+      setCollapsed(new Set(groups.map((g) => g.category)))
+    }
+  }, [groups])
   const fileInputRef = useRef(null)
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/cuttoons-logo.png'
 import { useDocumentTitle } from '../lib/useDocumentTitle'
 
@@ -57,30 +57,42 @@ const tabs = [
   { to: '/settings', label: 'Settings', Icon: SettingsIcon },
 ]
 
+function pageTitle(pathname) {
+  if (pathname.startsWith('/orders/')) return pathname.endsWith('/new') ? 'New Order' : 'Edit Order'
+  if (pathname.startsWith('/taxes/')) return pathname.endsWith('/new') ? 'New Expense' : 'Edit Expense'
+  const tab = tabs.find((t) => (t.end ? pathname === t.to : pathname.startsWith(t.to)))
+  return tab?.label || ''
+}
+
 export default function Layout() {
   useDocumentTitle('CutToons Tracker')
+  const location = useLocation()
+  const title = pageTitle(location.pathname)
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-brand-50">
-      <header className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-brand-100 bg-brand-50/95 px-3 py-2 backdrop-blur">
-        <img src={logo} alt="CutToons Tracker" className="h-8 w-auto flex-shrink-0" />
-        <nav className="flex gap-1">
-          {tabs.map(({ to, label, end, Icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              aria-label={label}
-              title={label}
-              className={({ isActive }) =>
-                'flex h-10 w-10 items-center justify-center rounded-xl transition duration-150 active:scale-95 ' +
-                (isActive ? 'bg-brand-100 text-brand-700' : 'text-slate-400')
-              }
-            >
-              <Icon className="h-5 w-5" />
-            </NavLink>
-          ))}
-        </nav>
+      <header className="sticky top-0 z-10 border-b border-brand-100 bg-brand-50/95 backdrop-blur">
+        <div className="flex items-center justify-between gap-2 px-3 py-2">
+          <img src={logo} alt="CutToons Tracker" className="h-8 w-auto flex-shrink-0" />
+          <nav className="flex gap-1">
+            {tabs.map(({ to, label, end, Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                aria-label={label}
+                title={label}
+                className={({ isActive }) =>
+                  'flex h-10 w-10 items-center justify-center rounded-xl transition duration-150 active:scale-95 ' +
+                  (isActive ? 'bg-brand-100 text-brand-700' : 'text-slate-400')
+                }
+              >
+                <Icon className="h-5 w-5" />
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+        {title && <p className="px-3 pb-2 text-sm font-bold text-slate-600">{title}</p>}
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
