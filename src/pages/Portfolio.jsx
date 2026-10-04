@@ -7,6 +7,14 @@ import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
 const editInputCls = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm'
 const DEFAULT_CATEGORY = 'Other'
 
+function ChevronIcon({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  )
+}
+
 function itemSubtitle(item) {
   return [item.caption, item.sizeTag, item.price ? `$${Number(item.price).toFixed(2)}` : null]
     .filter(Boolean)
@@ -53,6 +61,7 @@ function PortfolioThumb({ item, onPreview, onDelete }) {
 export default function Portfolio() {
   const rawItems = useCollection('portfolio')
   const groups = useMemo(() => groupedPortfolio(rawItems), [rawItems])
+  const [collapsed, setCollapsed] = useState(() => new Set())
   const fileInputRef = useRef(null)
   const [caption, setCaption] = useState('')
   const [sizeTag, setSizeTag] = useState('')
@@ -140,6 +149,22 @@ export default function Portfolio() {
     if (!confirm('Delete this photo from your portfolio?')) return
     if (previewItem?.id === id) setPreviewItem(null)
     await deletePortfolioItem(id)
+  }
+
+  function toggleCategory(category) {
+    setCollapsed((prev) => {
+      const next = new Set(prev)
+      if (next.has(category)) next.delete(category)
+      else next.add(category)
+      return next
+    })
+  }
+
+  const allCollapsed = !!groups && groups.length > 0 && groups.every((g) => collapsed.has(g.category))
+
+  function toggleAll() {
+    if (!groups) return
+    setCollapsed(allCollapsed ? new Set() : new Set(groups.map((g) => g.category)))
   }
 
   return (
@@ -231,16 +256,46 @@ export default function Portfolio() {
         </div>
       )}
 
-      {groups?.map((group) => (
-        <div key={group.category} className="space-y-2">
-          <p className="text-sm font-semibold text-slate-700">{group.category}</p>
-          <div className="grid grid-cols-3 gap-2">
-            {group.items.map((item) => (
-              <PortfolioThumb key={item.id} item={item} onPreview={() => openPreview(item)} onDelete={handleDelete} />
-            ))}
+      {groups && groups.length > 0 && (
+        <button
+          type="button"
+          onClick={toggleAll}
+          className="inline-flex items-center gap-1.5 rounded-full border-2 border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition duration-150 active:scale-95 hover:border-brand-300"
+        >
+          {allCollapsed ? 'Expand All' : 'Collapse All'}
+          <ChevronIcon className={'h-3.5 w-3.5 transition-transform duration-200 ' + (allCollapsed ? '' : 'rotate-180')} />
+        </button>
+      )}
+
+      {groups?.map((group) => {
+        const isCollapsed = collapsed.has(group.category)
+        return (
+          <div key={group.category} className="space-y-2">
+            <button
+              type="button"
+              onClick={() => toggleCategory(group.category)}
+              className="flex w-full items-center justify-between rounded-lg px-1 py-1 text-left active:scale-[0.99]"
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-slate-700">{group.category}</span>
+                <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-bold text-slate-500">
+                  {group.items.length}
+                </span>
+              </span>
+              <ChevronIcon
+                className={'h-4 w-4 text-slate-400 transition-transform duration-200 ' + (isCollapsed ? '-rotate-90' : '')}
+              />
+            </button>
+            {!isCollapsed && (
+              <div className="grid grid-cols-3 gap-2">
+                {group.items.map((item) => (
+                  <PortfolioThumb key={item.id} item={item} onPreview={() => openPreview(item)} onDelete={handleDelete} />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        )
+      })}
 
       {previewItem && (
         <div
