@@ -10,7 +10,11 @@ const faqs = [
         Every piece starts as a hand-drawn design on iPad. We project that design onto a medium-density
         fiberboard (MDF) panel to keep everything perfectly proportioned, then cut it out with a jigsaw
         and add detailed edge work with a router. From there, it's hand-painted with acrylic and finished
-        with a glossy, durable coat of epoxy.
+        with a glossy, durable coat of epoxy. You can watch the whole process in action on our{' '}
+        <Link to="/about" className="font-semibold text-comic-600 underline underline-offset-2">
+          About page
+        </Link>
+        , where we've got a timelapse of a piece coming together start to finish.
       </p>
     ),
   },

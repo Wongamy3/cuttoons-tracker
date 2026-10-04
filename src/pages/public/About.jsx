@@ -32,6 +32,19 @@ export default function About() {
           in acrylic and finished with a glossy, durable coat of epoxy — so every commission really is one
           of a kind.
         </p>
+        <div>
+          <h2 className="font-comic text-xl text-black">Watch a Timelapse</h2>
+          <p className="mt-1">A peek at how one of our pieces comes together, start to finish.</p>
+          <div className="mt-3 aspect-video overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+            <iframe
+              className="h-full w-full"
+              src="https://www.youtube.com/embed/9ne3ogtn1yU"
+              title="CutToons painting timelapse"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
         <p>
           We both still have our regular jobs, but CutToons is something we get to do together, just for
           the love of it. Jeremy especially loves bringing people's ideas to life — creating pieces that
