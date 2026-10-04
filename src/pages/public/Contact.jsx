@@ -6,6 +6,8 @@ import InquiryForm from '../../components/shop/InquiryForm'
 
 export default function Contact() {
   const queueStats = useDocument('queueStats', 'current')
+  const siteSettings = useDocument('siteSettings', 'current')
+  const acceptingCommissions = siteSettings?.acceptingCommissions !== false
   const [showForm, setShowForm] = useState(false)
 
   return (
@@ -14,6 +16,17 @@ export default function Contact() {
       <p className="mt-2 text-sm text-slate-600">
         Interested in a custom commission, or have a question about a piece? Reach out any time.
       </p>
+
+      {!acceptingCommissions && (
+        <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <h2 className="font-comic text-xl text-black">Not Currently Taking Commissions</h2>
+          <p className="mt-1.5 text-sm text-slate-600">
+            We're not able to take on new custom orders at the moment, but feel free to reach out with any
+            questions — we'd love to hear from you, and we'll let you know as soon as we're open for new
+            commissions again.
+          </p>
+        </div>
+      )}
 
       {queueStats != null && (
         <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">

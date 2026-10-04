@@ -167,6 +167,13 @@ export async function publishQueueCount(count) {
   await setDoc(doc(firestore, 'queueStats', 'current'), { count, updatedAt: Date.now() })
 }
 
+// Lets the shop owner pause custom commissions from the admin dashboard; the
+// public Contact Us page reads this to show a "not currently taking
+// commissions" notice instead of the inquiry form prompt.
+export async function setAcceptingCommissions(acceptingCommissions) {
+  await setDoc(doc(firestore, 'siteSettings', 'current'), { acceptingCommissions, updatedAt: Date.now() })
+}
+
 export function blankOrder() {
   return {
     customerName: '',

@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { hasDeposit, totalPaid, buildUpdateMessage, publishQueueCount, QUEUE_STATUSES } from '../db'
+import {
+  hasDeposit,
+  totalPaid,
+  buildUpdateMessage,
+  publishQueueCount,
+  setAcceptingCommissions,
+  QUEUE_STATUSES,
+} from '../db'
 import { useCollection } from '../lib/useCollection'
+import { useDocument } from '../lib/useDocument'
 import { DepositBadge, StatusBadge } from '../components/Badges'
 import { btnPrimary } from '../components/buttonStyles'
 import { copyToClipboard } from '../lib/clipboard'
@@ -28,6 +36,13 @@ export default function Dashboard() {
 
   const orders = useCollection('orders')
   const activeCount = orders ? orders.filter((o) => o.status !== 'Completed').length : 0
+
+  const siteSettings = useDocument('siteSettings', 'current')
+  const acceptingCommissions = siteSettings?.acceptingCommissions !== false
+
+  function handleToggleCommissions() {
+    setAcceptingCommissions(!acceptingCommissions).catch((err) => console.error(err))
+  }
 
   // Keep the public Contact page's queue count in sync whenever this page is
   // open and the order list changes. There's no backend to do this on every
@@ -68,6 +83,35 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3">
+        <div>
+          <p className="font-medium text-black">Accepting custom commissions</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            {acceptingCommissions
+              ? 'Customers can submit new inquiries on the Contact Us page.'
+              : "Customers will see a notice that you're not currently taking new orders."}
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={acceptingCommissions}
+          aria-label="Accepting custom commissions"
+          onClick={handleToggleCommissions}
+          className={
+            'relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition duration-150 ' +
+            (acceptingCommissions ? 'bg-comic-500' : 'bg-slate-300')
+          }
+        >
+          <span
+            className={
+              'inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition duration-150 ' +
+              (acceptingCommissions ? 'translate-x-6' : 'translate-x-1')
+            }
+          />
+        </button>
+      </div>
+
       <div className="flex items-center gap-2">
         <input
           type="search"
