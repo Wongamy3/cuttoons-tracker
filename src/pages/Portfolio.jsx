@@ -257,14 +257,19 @@ export default function Portfolio() {
       )}
 
       {groups && groups.length > 0 && (
-        <button
-          type="button"
-          onClick={toggleAll}
-          className="inline-flex items-center gap-1.5 rounded-full border-2 border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition duration-150 active:scale-95 hover:border-brand-300"
-        >
-          {allCollapsed ? 'Expand All' : 'Collapse All'}
-          <ChevronIcon className={'h-3.5 w-3.5 transition-transform duration-200 ' + (allCollapsed ? '' : 'rotate-180')} />
-        </button>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-slate-500">
+            {rawItems.length} item{rawItems.length === 1 ? '' : 's'} total
+          </p>
+          <button
+            type="button"
+            onClick={toggleAll}
+            className="inline-flex items-center gap-1.5 rounded-full border-2 border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition duration-150 active:scale-95 hover:border-brand-300"
+          >
+            {allCollapsed ? 'Expand All' : 'Collapse All'}
+            <ChevronIcon className={'h-3.5 w-3.5 transition-transform duration-200 ' + (allCollapsed ? '' : 'rotate-180')} />
+          </button>
+        </div>
       )}
 
       {groups?.map((group) => {
