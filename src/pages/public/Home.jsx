@@ -40,19 +40,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
-        <h2 className="font-comic text-2xl text-black">Ready to place an order?</h2>
-        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
-          We'd love to bring your idea to life — reach out and let's get started.
-        </p>
-        <Link
-          to="/shop/contact"
-          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
-        >
-          Contact Us →
-        </Link>
-      </section>
-
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
@@ -62,6 +49,19 @@ export default function Home() {
           onSelect={openPreview}
           emptyText="Nothing available right now — check back soon!"
         />
+      </section>
+
+      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
+        <h2 className="font-comic text-2xl text-black">Want a Custom Piece?</h2>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
+          We'd love to bring your idea to life — reach out and let's get started.
+        </p>
+        <Link
+          to="/shop/contact"
+          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
+        >
+          Contact Us →
+        </Link>
       </section>
 
       <div className="my-12 flex items-center gap-3" aria-hidden="true">

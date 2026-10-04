@@ -9,7 +9,7 @@ const SIGNATURE_PATH =
 // of the letter are only joined near the base in the original photo, but
 // potrace merged them into one solid filled shape when traced to vector.
 // Added back by hand as a white cutout on top of the fill.
-const A_GAP_PATH = 'M 230 93 L 221 136 L 244 133 Z'
+const A_GAP_PATH = 'M 230 93 L 220 140 L 246 138 Z'
 
 export default function AnimatedSignature({ className }) {
   const strokeRef = useRef(null)
