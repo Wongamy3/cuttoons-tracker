@@ -28,6 +28,7 @@ function CloseIcon(props) {
 const links = [
   { to: '/', label: 'Home', end: true },
   { to: '/browse', label: 'Shop' },
+  { to: '/merch', label: 'Merch' },
   { to: '/sold', label: 'Sold' },
   { to: '/about', label: 'About' },
   { to: '/faq', label: 'FAQs' },

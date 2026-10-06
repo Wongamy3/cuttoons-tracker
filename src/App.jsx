@@ -5,6 +5,7 @@ import Login from './components/Login'
 import PublicLayout from './components/shop/PublicLayout'
 import PublicHome from './pages/public/Home'
 import PublicShop from './pages/public/Shop'
+import PublicMerch from './pages/public/Merch'
 import PublicSold from './pages/public/Sold'
 import PublicAbout from './pages/public/About'
 import PublicFAQ from './pages/public/FAQ'
@@ -13,6 +14,7 @@ import Dashboard from './pages/Dashboard'
 import OrderForm from './pages/OrderForm'
 import Portfolio from './pages/Portfolio'
 import ForSale from './pages/ForSale'
+import Merch from './pages/Merch'
 import Taxes from './pages/Taxes'
 import ExpenseForm from './pages/ExpenseForm'
 import Settings from './pages/Settings'
@@ -51,6 +53,7 @@ function App() {
       <Route element={<PublicLayout />}>
         <Route index element={<PublicHome />} />
         <Route path="browse" element={<PublicShop />} />
+        <Route path="merch" element={<PublicMerch />} />
         <Route path="sold" element={<PublicSold />} />
         <Route path="about" element={<PublicAbout />} />
         <Route path="faq" element={<PublicFAQ />} />
@@ -68,6 +71,7 @@ function App() {
         <Route path="orders/:id" element={<OrderForm />} />
         <Route path="portfolio" element={<Portfolio />} />
         <Route path="for-sale" element={<ForSale />} />
+        <Route path="merch" element={<Merch />} />
         <Route path="taxes" element={<Taxes />} />
         <Route path="taxes/:id" element={<ExpenseForm />} />
         <Route path="settings" element={<Settings />} />

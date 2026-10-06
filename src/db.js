@@ -83,6 +83,18 @@ export async function deleteForSaleItem(id) {
   await deleteDoc(doc(firestore, 'forSale', id))
 }
 
+// --- Merch ---
+export async function addMerchItem(data) {
+  const ref = await addDoc(collection(firestore, 'merch'), data)
+  return ref.id
+}
+export async function updateMerchItem(id, data) {
+  await updateDoc(doc(firestore, 'merch', id), data)
+}
+export async function deleteMerchItem(id) {
+  await deleteDoc(doc(firestore, 'merch', id))
+}
+
 // Moves a For Sale item into the Portfolio (Sold) collection as a single
 // atomic batch — either both the add and the remove happen, or neither does,
 // so a sold painting can never get duplicated or disappear if one write fails.

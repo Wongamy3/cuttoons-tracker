@@ -40,6 +40,14 @@ function TagIcon(props) {
   )
 }
 
+function ShirtIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M16 4h2l4 4-3 3-2-2v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9l-2 2-3-3 4-4h2a3 3 0 0 0 6 0Z" />
+    </svg>
+  )
+}
+
 function TaxesIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -53,6 +61,7 @@ const tabs = [
   { to: '/admin', label: 'Home', end: true, Icon: HomeIcon },
   { to: '/admin/portfolio', label: 'Portfolio', Icon: PortfolioIcon },
   { to: '/admin/for-sale', label: 'For Sale', Icon: TagIcon },
+  { to: '/admin/merch', label: 'Merch', Icon: ShirtIcon },
   { to: '/admin/taxes', label: 'Taxes', Icon: TaxesIcon },
   { to: '/admin/settings', label: 'Settings', Icon: SettingsIcon },
 ]

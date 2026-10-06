@@ -9,6 +9,9 @@ import AnimatedSignature from '../../components/shop/AnimatedSignature'
 
 export default function Home() {
   const forSaleItems = sortedByNewest(useCollection('forSale'))
+  const rawMerch = useCollection('merch')
+  const merchItems = sortedByNewest(rawMerch)
+  const hasMerchItems = !!rawMerch && rawMerch.length > 0
   const rawPortfolio = useCollection('portfolio')
   const soldPreviewItems = homePageItems(rawPortfolio)
   const hasSoldItems = !!rawPortfolio && rawPortfolio.length > 0
@@ -57,6 +60,28 @@ export default function Home() {
           onSelect={openPreview}
           emptyText="Nothing available right now — check back soon!"
         />
+      </section>
+
+      <section className="mt-10">
+        <h2 className="font-comic text-2xl text-black">Merch</h2>
+        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">CutToons gear and apparel.</p>
+        <PaintingGrid
+          items={merchItems}
+          sold={false}
+          onSelect={openPreview}
+          emptyText="No merch available right now — check back soon!"
+        />
+
+        {hasMerchItems && (
+          <div className="mt-5 flex justify-center">
+            <Link
+              to="/merch"
+              className="font-comic inline-flex items-center gap-1.5 rounded-full border-2 border-comic-500 bg-white px-5 py-2 text-base tracking-wide text-comic-600 shadow-sm transition duration-150 hover:bg-comic-100 active:scale-95"
+            >
+              See All →
+            </Link>
+          </div>
+        )}
       </section>
 
       <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
