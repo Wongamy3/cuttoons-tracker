@@ -42,7 +42,11 @@ export default function PaintingGrid({ items, allItems, sold, showCategory, onSe
             {item.price && (
               <p className="mt-1">
                 {sold && <span className="text-xs font-medium text-slate-400">Sold for </span>}
-                <span className="font-comic text-xl tracking-wide text-comic-600">
+                <span
+                  className={
+                    'font-comic text-xl tracking-wide ' + (sold ? 'text-comic-600' : 'text-black')
+                  }
+                >
                   ${Number(item.price).toFixed(2)}
                 </span>
               </p>

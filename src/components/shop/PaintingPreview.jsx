@@ -118,7 +118,11 @@ export default function PaintingPreview({ items, index, sold, hideInterest, onNa
           {item.description && (
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">{item.description}</p>
           )}
-          {item.price && <p className="mt-2 text-xl font-bold text-comic-600">${Number(item.price).toFixed(2)}</p>}
+          {item.price && (
+            <p className={'mt-2 text-xl font-bold ' + (sold ? 'text-comic-600' : 'text-black')}>
+              ${Number(item.price).toFixed(2)}
+            </p>
+          )}
           {!sold && !hideInterest && (
             <p className="mt-3 text-sm text-slate-600">
               Interested in this piece?{' '}
