@@ -13,11 +13,17 @@ function itemSubtitle(item) {
 
 function MerchThumb({ item, onPreview, onDelete }) {
   const subtitle = itemSubtitle(item)
+  const photoCount = item.photos?.length || 0
   return (
     <div className="group relative aspect-square overflow-hidden rounded-lg border border-slate-200 bg-white">
       <button type="button" onClick={onPreview} className="block h-full w-full" aria-label="Preview photo">
-        <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
+        <img src={item.photos?.[0]?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
       </button>
+      {photoCount > 1 && (
+        <div className="pointer-events-none absolute left-1 top-1 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] text-white">
+          {photoCount} photos
+        </div>
+      )}
       {subtitle && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-black/60 px-2 py-1 text-[11px] text-white">
           {subtitle}
@@ -53,25 +59,33 @@ export default function Merch() {
   const [editSizeTag, setEditSizeTag] = useState('')
   const [editPrice, setEditPrice] = useState('')
   const [editDescription, setEditDescription] = useState('')
+  const [editPhotos, setEditPhotos] = useState([])
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0)
   const [saving, setSaving] = useState(false)
+  const [addingPhotos, setAddingPhotos] = useState(false)
+  const addPhotosInputRef = useRef(null)
 
-  async function handleFiles(e) {
+  // All photos selected here become images on a single new merch item (e.g.
+  // different angles of the same shirt), unlike For Sale where each file
+  // becomes its own separate painting listing.
+  async function handleAddItem(e) {
     const files = Array.from(e.target.files || [])
     e.target.value = ''
     if (!files.length) return
     setUploading(true)
     try {
+      const photos = []
       for (const file of files) {
-        const photo = await uploadPhoto(file, 'merch')
-        await addMerchItem({
-          photo,
-          caption: caption.trim(),
-          sizeTag: sizeTag.trim(),
-          price: price.trim(),
-          description: description.trim(),
-          createdAt: Date.now(),
-        })
+        photos.push(await uploadPhoto(file, 'merch'))
       }
+      await addMerchItem({
+        photos,
+        caption: caption.trim(),
+        sizeTag: sizeTag.trim(),
+        price: price.trim(),
+        description: description.trim(),
+        createdAt: Date.now(),
+      })
       setCaption('')
       setSizeTag('')
       setPrice('')
@@ -87,6 +101,29 @@ export default function Merch() {
     setEditSizeTag(item.sizeTag || '')
     setEditPrice(item.price || '')
     setEditDescription(item.description || '')
+    setEditPhotos(item.photos || [])
+    setSelectedPhotoIndex(0)
+  }
+
+  async function handleAddMorePhotos(e) {
+    const files = Array.from(e.target.files || [])
+    e.target.value = ''
+    if (!files.length) return
+    setAddingPhotos(true)
+    try {
+      const uploaded = []
+      for (const file of files) {
+        uploaded.push(await uploadPhoto(file, 'merch'))
+      }
+      setEditPhotos((photos) => [...photos, ...uploaded])
+    } finally {
+      setAddingPhotos(false)
+    }
+  }
+
+  function removeEditPhoto(i) {
+    setEditPhotos((photos) => photos.filter((_, idx) => idx !== i))
+    setSelectedPhotoIndex(0)
   }
 
   async function handleSaveEdit() {
@@ -94,6 +131,7 @@ export default function Merch() {
     setSaving(true)
     try {
       const data = {
+        photos: editPhotos,
         caption: editCaption.trim(),
         sizeTag: editSizeTag.trim(),
         price: editPrice.trim(),
@@ -116,6 +154,9 @@ export default function Merch() {
     <div className="space-y-4">
       <div className="rounded-xl border border-slate-200 bg-white p-3 space-y-2">
         <p className="text-sm font-medium text-slate-700">Add Merch Item</p>
+        <p className="text-xs text-slate-400">
+          Selecting multiple photos adds them all to one item (e.g. different angles of the same shirt).
+        </p>
         <input
           placeholder="Caption (e.g. CutToons Dad Hat)"
           value={caption}
@@ -160,7 +201,7 @@ export default function Merch() {
           accept="image/*"
           multiple
           className="hidden"
-          onChange={handleFiles}
+          onChange={handleAddItem}
         />
       </div>
 
@@ -186,9 +227,53 @@ export default function Merch() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={previewItem.photo?.url}
+              src={editPhotos[selectedPhotoIndex]?.url}
               alt={previewItem.caption || ''}
-              className="max-h-[45vh] w-full rounded-lg object-contain"
+              className="max-h-[40vh] w-full rounded-lg object-contain"
+            />
+
+            {editPhotos.length > 0 && (
+              <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                {editPhotos.map((photo, i) => (
+                  <div key={photo.url} className="relative flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPhotoIndex(i)}
+                      className={
+                        'h-14 w-14 overflow-hidden rounded-lg border-2 ' +
+                        (i === selectedPhotoIndex ? 'border-brand-500' : 'border-slate-200')
+                      }
+                    >
+                      <img src={photo.url} alt="" className="h-full w-full object-cover" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeEditPhoto(i)}
+                      className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-white"
+                      aria-label="Remove photo"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <button
+              type="button"
+              disabled={addingPhotos}
+              onClick={() => addPhotosInputRef.current?.click()}
+              className={'mt-2 w-full disabled:opacity-60 ' + btnSecondary}
+            >
+              {addingPhotos ? 'Uploading...' : '+ Add more photos'}
+            </button>
+            <input
+              ref={addPhotosInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={handleAddMorePhotos}
             />
 
             <div className="mt-3 space-y-2">
@@ -225,7 +310,7 @@ export default function Merch() {
               <button
                 type="button"
                 onClick={handleSaveEdit}
-                disabled={saving}
+                disabled={saving || editPhotos.length === 0}
                 className={'w-full disabled:opacity-60 ' + btnPrimary}
               >
                 {saving ? 'Saving...' : 'Save changes'}
@@ -234,7 +319,7 @@ export default function Merch() {
 
             <div className="mt-3 flex justify-center gap-2">
               <a
-                href={previewItem.photo?.url}
+                href={editPhotos[selectedPhotoIndex]?.url}
                 download
                 target="_blank"
                 rel="noreferrer"

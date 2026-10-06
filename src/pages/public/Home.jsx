@@ -18,11 +18,13 @@ export default function Home() {
   const [previewList, setPreviewList] = useState(null)
   const [previewIndex, setPreviewIndex] = useState(0)
   const [previewSold, setPreviewSold] = useState(false)
+  const [previewHideInterest, setPreviewHideInterest] = useState(false)
 
-  function openPreview(list, index, sold) {
+  function openPreview(list, index, sold, hideInterest = false) {
     setPreviewList(list)
     setPreviewIndex(index)
     setPreviewSold(sold)
+    setPreviewHideInterest(hideInterest)
   }
 
   return (
@@ -62,13 +64,26 @@ export default function Home() {
         />
       </section>
 
+      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
+        <h2 className="font-comic text-2xl text-black">Want a Custom Piece?</h2>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
+          We'd love to bring your idea to life — reach out and let's get started.
+        </p>
+        <Link
+          to="/contact"
+          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
+        >
+          Contact Us →
+        </Link>
+      </section>
+
       <section className="mt-10">
         <h2 className="font-comic text-2xl text-black">Merch</h2>
-        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">CutToons gear and apparel.</p>
+        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">CutToons apparel and accessories.</p>
         <PaintingGrid
           items={merchItems}
           sold={false}
-          onSelect={openPreview}
+          onSelect={(list, index) => openPreview(list, index, false, true)}
           emptyText="No merch available right now — check back soon!"
         />
 
@@ -82,19 +97,6 @@ export default function Home() {
             </Link>
           </div>
         )}
-      </section>
-
-      <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
-        <h2 className="font-comic text-2xl text-black">Want a Custom Piece?</h2>
-        <p className="mx-auto mt-1 max-w-sm text-sm text-slate-600">
-          We'd love to bring your idea to life — reach out and let's get started.
-        </p>
-        <Link
-          to="/contact"
-          className="font-comic mt-4 inline-flex items-center gap-1.5 rounded-full bg-comic-500 px-6 py-2.5 text-base tracking-wide text-white shadow-sm transition duration-150 hover:bg-comic-600 active:scale-95"
-        >
-          Contact Us →
-        </Link>
       </section>
 
       <div className="my-12 flex items-center gap-3" aria-hidden="true">
@@ -133,6 +135,7 @@ export default function Home() {
         items={previewList}
         index={previewIndex}
         sold={previewSold}
+        hideInterest={previewHideInterest}
         onNavigate={setPreviewIndex}
         onClose={() => setPreviewList(null)}
       />

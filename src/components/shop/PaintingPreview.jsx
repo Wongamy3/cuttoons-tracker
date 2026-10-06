@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { itemSubtitle } from '../../lib/shopUtils'
 
@@ -27,9 +27,11 @@ function ChevronRightIcon(props) {
   )
 }
 
-export default function PaintingPreview({ items, index, sold, onNavigate, onClose }) {
+export default function PaintingPreview({ items, index, sold, hideInterest, onNavigate, onClose }) {
   const item = items?.[index]
   const hasMultiple = !!items && items.length > 1
+  const photos = item?.photos?.length ? item.photos : item?.photo ? [item.photo] : []
+  const [activePhoto, setActivePhoto] = useState(0)
 
   function goPrev() {
     onNavigate((index - 1 + items.length) % items.length)
@@ -38,6 +40,10 @@ export default function PaintingPreview({ items, index, sold, onNavigate, onClos
   function goNext() {
     onNavigate((index + 1) % items.length)
   }
+
+  useEffect(() => {
+    setActivePhoto(0)
+  }, [item])
 
   useEffect(() => {
     if (!item) return
@@ -85,17 +91,35 @@ export default function PaintingPreview({ items, index, sold, onNavigate, onClos
           </button>
         </div>
         <img
-          src={item.photo?.url}
+          src={photos[activePhoto]?.url}
           alt={item.caption || ''}
           className="max-h-[60vh] w-full rounded-lg object-contain"
         />
+        {photos.length > 1 && (
+          <div className="mt-2 flex justify-center gap-2 overflow-x-auto pb-1">
+            {photos.map((photo, i) => (
+              <button
+                key={photo.url}
+                type="button"
+                onClick={() => setActivePhoto(i)}
+                aria-label={`View photo ${i + 1}`}
+                className={
+                  'h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg border-2 transition duration-150 ' +
+                  (i === activePhoto ? 'border-comic-500' : 'border-slate-200')
+                }
+              >
+                <img src={photo.url} alt="" className="h-full w-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
         <div className="mt-3 text-center">
           {itemSubtitle(item) && <p className="text-sm text-slate-500">{itemSubtitle(item)}</p>}
           {item.description && (
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">{item.description}</p>
           )}
           {item.price && <p className="mt-2 text-xl font-bold text-comic-600">${Number(item.price).toFixed(2)}</p>}
-          {!sold && (
+          {!sold && !hideInterest && (
             <p className="mt-3 text-sm text-slate-600">
               Interested in this piece?{' '}
               <Link

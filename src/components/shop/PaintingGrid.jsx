@@ -23,7 +23,11 @@ export default function PaintingGrid({ items, allItems, sold, showCategory, onSe
           className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 active:translate-y-0"
         >
           <div className="relative aspect-square overflow-hidden bg-slate-100">
-            <img src={item.photo?.url} alt={item.caption || ''} className="h-full w-full object-cover" />
+            <img
+              src={item.photo?.url || item.photos?.[0]?.url}
+              alt={item.caption || ''}
+              className="h-full w-full object-cover"
+            />
             {sold && (
               <span className="font-comic absolute left-2 top-2 -rotate-[14deg] rounded-full border-2 border-white bg-comic-500 px-3 py-1 text-sm text-white shadow-md">
                 Sold
