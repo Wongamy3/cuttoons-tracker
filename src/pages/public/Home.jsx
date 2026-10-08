@@ -83,6 +83,7 @@ export default function Home() {
         <PaintingGrid
           items={merchItems}
           sold={false}
+          showCategory
           onSelect={(list, index) => openPreview(list, index, false, true)}
           emptyText="No merch available right now — check back soon!"
         />

@@ -32,6 +32,8 @@ export default function PaintingPreview({ items, index, sold, hideInterest, onNa
   const hasMultiple = !!items && items.length > 1
   const photos = item?.photos?.length ? item.photos : item?.photo ? [item.photo] : []
   const [activePhoto, setActivePhoto] = useState(0)
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedColor, setSelectedColor] = useState(null)
 
   function goPrev() {
     onNavigate((index - 1 + items.length) % items.length)
@@ -43,6 +45,8 @@ export default function PaintingPreview({ items, index, sold, hideInterest, onNa
 
   useEffect(() => {
     setActivePhoto(0)
+    setSelectedSize(null)
+    setSelectedColor(null)
   }, [item])
 
   useEffect(() => {
@@ -117,6 +121,46 @@ export default function PaintingPreview({ items, index, sold, hideInterest, onNa
           {itemSubtitle(item) && <p className="text-sm text-slate-500">{itemSubtitle(item)}</p>}
           {item.description && (
             <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-slate-600">{item.description}</p>
+          )}
+          {item.category === 'Shirt' && item.sizes?.length > 0 && (
+            <div className="mt-3">
+              <p className="text-xs font-medium text-slate-500">Size</p>
+              <div className="mt-1.5 flex flex-wrap justify-center gap-1.5">
+                {item.sizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => setSelectedSize(size)}
+                    className={
+                      'rounded-full border-2 px-3 py-1 text-xs font-bold transition duration-150 active:scale-95 ' +
+                      (selectedSize === size ? 'border-black bg-black text-white' : 'border-slate-200 text-slate-600')
+                    }
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {item.colors?.length > 0 && (
+            <div className="mt-3">
+              <p className="text-xs font-medium text-slate-500">Color</p>
+              <div className="mt-1.5 flex flex-wrap justify-center gap-1.5">
+                {item.colors.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => setSelectedColor(color)}
+                    className={
+                      'rounded-full border-2 px-3 py-1 text-xs font-bold transition duration-150 active:scale-95 ' +
+                      (selectedColor === color ? 'border-black bg-black text-white' : 'border-slate-200 text-slate-600')
+                    }
+                  >
+                    {color}
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
           {item.price && (
             <p className={'mt-2 text-xl font-bold ' + (sold ? 'text-comic-600' : 'text-black')}>

@@ -129,6 +129,10 @@ export const SIZE_OPTIONS = Array.from({ length: 8 }, (_, i) => `${i + 1}ft`)
 
 export const PICKUP_OPTIONS = ['Pick Up in San Antonio', 'Ship']
 
+export const MERCH_CATEGORIES = ['Shirt', 'Other']
+
+export const SHIRT_SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL']
+
 export const PORTFOLIO_CATEGORIES = [
   'CutToons Originals',
   'Dragon Ball Z',

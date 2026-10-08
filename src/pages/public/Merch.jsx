@@ -16,6 +16,7 @@ export default function Merch() {
       <PaintingGrid
         items={merchItems}
         sold={false}
+        showCategory
         onSelect={(list, index) => {
           setPreviewList(list)
           setPreviewIndex(index)
