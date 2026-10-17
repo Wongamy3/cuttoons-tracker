@@ -67,10 +67,11 @@ export default function PublicLayout() {
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
-            className="flex h-9 w-9 items-center justify-center justify-self-start text-black"
+            className="flex items-center gap-1.5 justify-self-start text-black"
             aria-label={open ? 'Close menu' : 'Open menu'}
           >
             {open ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+            <span className="font-comic text-sm tracking-wide">Menu</span>
           </button>
           <Link to="/" className="justify-self-center">
             <img src={logo} alt="CutToons" className="h-10 w-auto" />
