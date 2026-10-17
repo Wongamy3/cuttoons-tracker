@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
-      <section className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-center sm:text-left">
+      <section className="sticky top-16 z-0 flex flex-col items-center gap-6 bg-white pb-6 text-center sm:flex-row sm:items-center sm:text-left">
         <img
           src={teamPhoto}
           alt="The CutToons team"
@@ -53,7 +53,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-10">
+      <section className="relative z-10 mt-10 rounded-t-3xl bg-white pt-6 shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.12)]">
         <div className="flex items-center gap-2">
           <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
           <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
