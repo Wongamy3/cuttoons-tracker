@@ -7,6 +7,7 @@ const links = [
   { to: '/browse', label: 'Available Paintings' },
   { to: '/merch', label: 'Merch' },
   { to: '/sold', label: 'Sold Paintings' },
+  { to: '/about', label: 'About' },
   { to: '/faq', label: 'FAQs' },
   { to: '/contact', label: 'Contact Us' },
 ]
