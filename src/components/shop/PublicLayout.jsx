@@ -42,7 +42,7 @@ const links = [
       { to: '/merch', label: 'Merch' },
     ],
   },
-  { to: '/sold', label: 'Sold' },
+  { to: '/sold', label: 'Sold Paintings' },
   { to: '/about', label: 'About' },
   { to: '/faq', label: 'FAQs' },
   { to: '/contact', label: 'Contact Us' },

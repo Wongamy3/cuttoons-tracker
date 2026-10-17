@@ -120,7 +120,7 @@ export default function Home() {
       <section className="px-4">
         <div className="flex items-center gap-2">
           <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
-          <h2 className="font-comic text-2xl text-black">Sold</h2>
+          <h2 className="font-comic text-2xl text-black">Sold Paintings</h2>
         </div>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
 
