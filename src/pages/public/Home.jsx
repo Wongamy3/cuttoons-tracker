@@ -54,7 +54,10 @@ export default function Home() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
+        <div className="flex items-center gap-2">
+          <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
+          <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
+        </div>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
         <PaintingGrid
           items={forSaleItems}
@@ -79,6 +82,7 @@ export default function Home() {
 
       <section className="mt-10">
         <div className="flex flex-wrap items-center gap-2">
+          <span className="h-5 w-1.5 flex-shrink-0 rounded-full bg-comic-500" aria-hidden="true" />
           <h2 className="font-comic text-2xl text-black">Merch</h2>
           <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
             Online ordering coming soon
@@ -112,7 +116,10 @@ export default function Home() {
       </div>
 
       <section>
-        <h2 className="font-comic text-2xl text-black">Sold</h2>
+        <div className="flex items-center gap-2">
+          <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
+          <h2 className="font-comic text-2xl text-black">Sold</h2>
+        </div>
         <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
 
         {rawPortfolio === undefined && <p className="mt-3 text-sm text-slate-400">Loading...</p>}
