@@ -1,5 +1,13 @@
 import { useMemo, useRef, useState } from 'react'
-import { addMerchItem, updateMerchItem, deleteMerchItem, uploadPhoto, MERCH_CATEGORIES, SHIRT_SIZES } from '../db'
+import {
+  addMerchItem,
+  updateMerchItem,
+  deleteMerchItem,
+  uploadPhoto,
+  deleteField,
+  MERCH_CATEGORIES,
+  SHIRT_SIZES,
+} from '../db'
 import { useCollection } from '../lib/useCollection'
 import { btnPrimary, btnDanger, btnSecondary } from '../components/buttonStyles'
 
@@ -239,6 +247,10 @@ export default function Merch() {
   // Saves immediately (unlike the other edit fields, which wait for "Save
   // changes") so the new cover shows up on the grid and customer-facing
   // pages right away, even if the admin closes the modal without saving.
+  // Also clears the old single-photo "photo" field some items still carry
+  // from before multi-photo support existed — the customer-facing grid
+  // preferred that legacy field over the photos array, so a leftover value
+  // there could silently override whatever cover was just chosen.
   async function makeEditPhotoCover(i) {
     const next = [...editPhotos]
     const [chosen] = next.splice(i, 1)
@@ -246,7 +258,7 @@ export default function Merch() {
     setEditPhotos(next)
     setSelectedPhotoIndex(0)
     if (previewItem) {
-      await updateMerchItem(previewItem.id, { photos: next })
+      await updateMerchItem(previewItem.id, { photos: next, photo: deleteField() })
     }
   }
 
@@ -256,6 +268,7 @@ export default function Merch() {
     try {
       const data = {
         photos: editPhotos,
+        photo: deleteField(),
         caption: editCaption.trim(),
         sizeTag: editSizeTag.trim(),
         price: editPrice.trim(),

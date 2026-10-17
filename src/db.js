@@ -1,5 +1,7 @@
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc, writeBatch } from 'firebase/firestore'
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc, writeBatch, deleteField } from 'firebase/firestore'
 import { db as firestore } from './firebase'
+
+export { deleteField }
 
 // --- Photo upload (Cloudinary, unsigned upload preset — no billing account needed) ---
 const CLOUDINARY_CLOUD_NAME = 'bhkm1h1v'

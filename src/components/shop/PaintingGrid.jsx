@@ -24,7 +24,7 @@ export default function PaintingGrid({ items, allItems, sold, showCategory, onSe
         >
           <div className="relative aspect-square overflow-hidden bg-slate-100">
             <img
-              src={item.photo?.url || item.photos?.[0]?.url}
+              src={item.photos?.[0]?.url || item.photo?.url}
               alt={item.caption || ''}
               className="h-full w-full object-cover"
             />
