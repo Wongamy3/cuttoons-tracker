@@ -22,7 +22,7 @@ export default function Sold() {
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8 lg:max-w-5xl xl:max-w-6xl">
       <h1 className="font-comic text-4xl text-black">Sold</h1>
-      <p className="mt-1 text-sm text-slate-500">A look at past work, for inspiration and sizing.</p>
+      <p className="font-comic mt-1 text-base tracking-wide text-slate-500">A look at past work, for inspiration and sizing.</p>
 
       {soldGroups && soldGroups.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-1.5">

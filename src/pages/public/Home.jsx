@@ -57,9 +57,9 @@ export default function Home() {
         <section className="relative z-10 mt-10 rounded-t-3xl bg-white px-4 pt-6 shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.12)]">
           <div className="flex items-center gap-2">
             <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
-            <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
+            <h2 className="font-comic text-2xl text-black">Available Paintings</h2>
           </div>
-          <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
+          <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Ready to ship or pick up.</p>
           <PaintingGrid
             items={forSaleItems}
             sold={false}
