@@ -28,9 +28,9 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
+    <main className="mx-auto max-w-3xl px-4 pb-16 pt-8 lg:max-w-5xl xl:max-w-6xl">
       <div className="relative">
-        <section className="sticky top-16 z-0 flex flex-col items-center gap-6 bg-white pb-6 text-center sm:flex-row sm:items-center sm:text-left">
+        <section className="static z-0 flex flex-col items-center gap-6 bg-white pb-6 text-center sm:sticky sm:top-16 sm:flex-row sm:items-center sm:text-left">
           <img
             src={teamPhoto}
             alt="The CutToons team"

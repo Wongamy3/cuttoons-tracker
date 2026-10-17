@@ -14,7 +14,7 @@ export default function PaintingGrid({ items, allItems, sold, showCategory, onSe
   const navList = allItems || items
 
   return (
-    <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
+    <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {items.map((item) => (
         <button
           key={item.id}

@@ -11,7 +11,7 @@ export default function Shop() {
   const [previewIndex, setPreviewIndex] = useState(0)
 
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
+    <main className="mx-auto max-w-3xl px-4 pb-16 pt-8 lg:max-w-5xl xl:max-w-6xl">
       <h1 className="font-comic text-4xl text-black">Shop</h1>
       <p className="mt-1 text-sm text-slate-500">Everything currently available, ready to ship or pick up.</p>
       <PaintingGrid
