@@ -29,43 +29,45 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
-      <section className="sticky top-16 z-0 flex flex-col items-center gap-6 bg-white pb-6 text-center sm:flex-row sm:items-center sm:text-left">
-        <img
-          src={teamPhoto}
-          alt="The CutToons team"
-          className="w-full rounded-lg border border-slate-200 shadow-xl sm:w-1/2 sm:flex-shrink-0"
-        />
-        <div className="sm:w-1/2">
-          <h1 className="font-comic text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:mx-0">
-            We're Jeremy and Amy — two San Antonio locals who turned a Covid-era hobby into CutToons. Every
-            piece starts with your idea: a photo, a character, a memory — hand-painted in acrylic on a
-            custom-cut MDF panel and finished with a glossy epoxy coat. No two pieces are ever quite the
-            same, and we still get excited about every one.
-          </p>
-          <Link
-            to="/about"
-            className="mx-auto mt-2 inline-block text-sm font-semibold text-comic-600 underline underline-offset-2 sm:mx-0"
-          >
-            Read more about us →
-          </Link>
-          <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
-        </div>
-      </section>
+      <div className="relative">
+        <section className="sticky top-16 z-0 flex flex-col items-center gap-6 bg-white pb-6 text-center sm:flex-row sm:items-center sm:text-left">
+          <img
+            src={teamPhoto}
+            alt="The CutToons team"
+            className="w-full rounded-lg border border-slate-200 shadow-xl sm:w-1/2 sm:flex-shrink-0"
+          />
+          <div className="sm:w-1/2">
+            <h1 className="font-comic text-4xl text-black sm:text-5xl">Welcome to CutToons Shop</h1>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:mx-0">
+              We're Jeremy and Amy — two San Antonio locals who turned a Covid-era hobby into CutToons.
+              Every piece starts with your idea: a photo, a character, a memory — hand-painted in acrylic
+              on a custom-cut MDF panel and finished with a glossy epoxy coat. No two pieces are ever quite
+              the same, and we still get excited about every one.
+            </p>
+            <Link
+              to="/about"
+              className="mx-auto mt-2 inline-block text-sm font-semibold text-comic-600 underline underline-offset-2 sm:mx-0"
+            >
+              Read more about us →
+            </Link>
+            <AnimatedSignature className="mx-auto mt-4 h-16 w-auto" />
+          </div>
+        </section>
 
-      <section className="relative z-10 mt-10 rounded-t-3xl bg-white pt-6 shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.12)]">
-        <div className="flex items-center gap-2">
-          <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
-          <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
-        </div>
-        <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
-        <PaintingGrid
-          items={forSaleItems}
-          sold={false}
-          onSelect={openPreview}
-          emptyText="Nothing available right now — check back soon!"
-        />
-      </section>
+        <section className="relative z-10 mt-10 rounded-t-3xl bg-white px-4 pt-6 shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.12)]">
+          <div className="flex items-center gap-2">
+            <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
+            <h2 className="font-comic text-2xl text-black">Currently For Sale</h2>
+          </div>
+          <p className="font-comic mt-1 text-base tracking-wide text-slate-500">Available paintings, ready to ship or pick up.</p>
+          <PaintingGrid
+            items={forSaleItems}
+            sold={false}
+            onSelect={openPreview}
+            emptyText="Nothing available right now — check back soon!"
+          />
+        </section>
+      </div>
 
       <section className="mt-10 rounded-2xl border-2 border-dotted border-slate-300 bg-slate-100 p-6 text-center">
         <h2 className="font-comic text-2xl text-black">Want a Custom Piece?</h2>
@@ -80,7 +82,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-10 px-4">
         <div className="flex flex-wrap items-center gap-2">
           <span className="h-5 w-1.5 flex-shrink-0 rounded-full bg-comic-500" aria-hidden="true" />
           <h2 className="font-comic text-2xl text-black">Merch</h2>
@@ -115,7 +117,7 @@ export default function Home() {
         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-300" />
       </div>
 
-      <section>
+      <section className="px-4">
         <div className="flex items-center gap-2">
           <span className="h-5 w-1.5 rounded-full bg-comic-500" aria-hidden="true" />
           <h2 className="font-comic text-2xl text-black">Sold</h2>
