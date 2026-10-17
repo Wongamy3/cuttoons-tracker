@@ -236,14 +236,18 @@ export default function Merch() {
     setSelectedPhotoIndex(0)
   }
 
-  function makeEditPhotoCover(i) {
-    setEditPhotos((photos) => {
-      const next = [...photos]
-      const [chosen] = next.splice(i, 1)
-      next.unshift(chosen)
-      return next
-    })
+  // Saves immediately (unlike the other edit fields, which wait for "Save
+  // changes") so the new cover shows up on the grid and customer-facing
+  // pages right away, even if the admin closes the modal without saving.
+  async function makeEditPhotoCover(i) {
+    const next = [...editPhotos]
+    const [chosen] = next.splice(i, 1)
+    next.unshift(chosen)
+    setEditPhotos(next)
     setSelectedPhotoIndex(0)
+    if (previewItem) {
+      await updateMerchItem(previewItem.id, { photos: next })
+    }
   }
 
   async function handleSaveEdit() {
