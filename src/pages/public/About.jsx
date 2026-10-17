@@ -12,19 +12,17 @@ export default function About() {
           business, and we still love every bit of it today.
         </p>
         <p>
-          Jeremy's been artistic since he was a kid, always drawn to painting, while Amy grew up into
-          woodworking. Put the two together and it turned out to be the perfect combination — Jeremy's
-          artwork, brought to life on pieces Amy helps shape and cut.
+          Jeremy's been artistic since he was a kid, always drawn to painting. Amy picked up woodworking as
+          a hobby over the years, and after showing Jeremy what she'd learned, the two started combining
+          it with his art — his designs, brought to life on panels Amy helps shape and cut.
         </p>
         <p>
           The name CutToons actually comes from Amy's dad. English was his second language, and he'd
-          always say "cuttoons" instead of "cartoons" — it stuck with her, and felt like the perfect name
-          once this hobby became something more.
-        </p>
-        <p>
-          Jeremy's favorite pieces to create are anime and TV characters. He grew up watching anime, and
-          Dragon Ball Z was always his favorite — it's a big reason why so much of our work leans anime. He
-          loves how unique, diverse, and culturally rich the art style is.
+          always say "cuttoons" instead of "cartoons" — it stuck with her. A cartoony name felt like the
+          perfect fit once this hobby became something more, since Jeremy's favorite pieces to create have
+          always been cartoon and TV characters. He grew up watching anime, and Dragon Ball Z was always
+          his favorite — it's a big reason why so much of our work leans anime. He loves how unique,
+          diverse, and culturally rich the art style is.
         </p>
         <p>
           Every piece still starts with your idea — a photo, a favorite character, a memory you want to
