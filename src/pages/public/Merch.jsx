@@ -11,7 +11,12 @@ export default function Merch() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8">
-      <h1 className="font-comic text-4xl text-black">Merch</h1>
+      <div className="flex flex-wrap items-center gap-2">
+        <h1 className="font-comic text-4xl text-black">Merch</h1>
+        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
+          Online ordering coming soon
+        </span>
+      </div>
       <p className="font-comic mt-1 text-base tracking-wide text-slate-500">CutToons apparel and accessories.</p>
       <PaintingGrid
         items={merchItems}

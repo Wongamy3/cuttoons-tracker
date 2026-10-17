@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { YOUTUBE_HANDLE } from '../../lib/shopUtils'
 
 export default function About() {
@@ -60,13 +59,6 @@ export default function About() {
             />
           </div>
         </div>
-        <p>
-          Interested in a custom commission?{' '}
-          <Link to="/contact" className="font-semibold text-comic-600 underline underline-offset-2">
-            Reach out
-          </Link>{' '}
-          — we'd love to bring your idea to life.
-        </p>
       </div>
     </main>
   )
